@@ -1,0 +1,58 @@
+#LJ molecules in a 2D box
+variable        Diam equal 0.016
+variable	coeffRes equal 0.1
+variable	coeffFric equal 0.5
+
+variable	rlo equal 0.3
+variable	rhi equal 0.6
+variable	dlo equal 2.0*${rlo}
+variable	dhi equal 2.0*${rhi}
+variable 	skin equal ${rhi}
+
+variable	kn equal 10^5
+variable	kt equal 0.2*${kn}
+
+variable	gravity equal 1.0
+variable	density equal 1.0
+
+variable	min_mass equal ${density}*4.0/3.0*PI*${rlo}*${rlo}*${rlo}
+variable	a equal (-2.0*log(${coeffRes})/PI)^2
+variable        gamma_n equal sqrt($a*2*${kn}/${min_mass}/(1+0.25*$a))
+variable        gamma_t equal ${gamma_n}*0.5
+
+dimension 	2
+units		si
+atom_style	sphere
+boundary 	f f p
+
+
+read_data       PrimaryFiles/Disk/lammps_disk_9000.lj
+region		disk sphere 0.0 0.0 0 1.0 side in
+
+atom_modify	sort 0 0 
+#neigh_modify delay 0 every 10  one 2500
+
+
+set 		group all density 0.01
+set 		group all diameter ${Diam}
+
+comm_modify	vel yes
+
+
+#now to print out info
+dump pos 	all custom 100000 /home/crhea/Dropbox/Thesis/PrimaryFiles/Disk/LAMMPSFILES/pos_lammps_out.txt id type x y z vx vy vz
+
+#Apply capillary/viscous and contact
+pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0 0.001 0.002 1.0 1.0 1.0 0.1
+pair_coeff	* *
+
+restart		100000 PrimaryFiles/Disk/LAMMPSFILES/restart1 PrimaryFiles/Disk/LAMMPSFILES/restart2
+timestep	0.00000001
+
+
+fix		1 all viscous/field 0.5 /home/crhea/Dropbox/Thesis/PrimaryFiles/Disk/VelForLammpsX.txt /home/crhea/Dropbox/Thesis/PrimaryFiles/Disk/VelForLammpsY.txt /home/crhea/Dropbox/Thesis/PrimaryFiles/Disk/Viscosity.txt
+fix 		wall all wall/gran/region hooke/history 1000.0 200.0 200.0 100.0 0.5 1 region disk
+fix		2 all nve/sphere
+
+thermo		100
+run		100

@@ -1,0 +1,51 @@
+read_restart  	/home/crhea/Dropbox/Thesis/PrimaryFiles/SweepSimulations/Viscosity_10.0/LAMMPSFILES/restart1
+
+variable	coeffRes equal 0.1
+variable	coeffFric equal 0.5
+
+variable	rlo equal 0.3
+variable	rhi equal 0.6
+variable	dlo equal 2.0*${rlo}
+variable	dhi equal 2.0*${rhi}
+variable 	skin equal ${rhi}
+
+variable	kn equal 10^5
+variable	kt equal 0.2*${kn}
+
+variable	gravity equal 1.0
+variable	density equal 1.0
+
+variable	min_mass equal ${density}*4.0/3.0*PI*${rlo}*${rlo}*${rlo}
+variable	a equal (-2.0*log(${coeffRes})/PI)^2
+variable        gamma_n equal sqrt($a*2*${kn}/${min_mass}/(1+0.25*$a))
+variable        gamma_t equal ${gamma_n}*0.5
+
+
+
+comm_modify	vel yes
+run 		0
+atom_modify	sort 0 0
+change_box 	all y final -0.6 0.6 boundary f f p
+change_box 	all x final -0.6 0.6 boundary f f p
+#group 		top id 1:100
+#group		bottom id 9901:10000
+region		diskinner sphere 0.0 0.0 0 0.05 side out
+#now to print out info
+dump pos 	all custom 1 /home/crhea/Dropbox/Thesis/PrimaryFiles/SweepSimulations/Viscosity_10.0/LAMMPSFILES/pos_lammps_out.txt id type x y z vx vy vz
+restart		1 /home/crhea/Dropbox/Thesis/PrimaryFiles/SweepSimulations/Viscosity_10.0/LAMMPSFILES/restart1 /home/crhea/Dropbox/Thesis/PrimaryFiles/SweepSimulations/Viscosity_10.0/LAMMPSFILES/restart2
+
+
+timestep	0.0001
+
+pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0  10.0 10.0 0.78 0.99 50.0 /home/crhea/Dropbox/Thesis/PrimaryFiles/SweepSimulations/Viscosity_10.0/SaturationInterpolated.txt
+pair_coeff	* *
+
+fix 		innerannulus all wall/gran/region hooke/history 1000.0 200.0 200.0 100.0 0.5 1 region diskinner
+fix		1 all viscous/field 50.0 /home/crhea/Dropbox/Thesis/PrimaryFiles/SweepSimulations/Viscosity_10.0/VelForLammpsX.txt /home/crhea/Dropbox/Thesis/PrimaryFiles/SweepSimulations/Viscosity_10.0/VelForLammpsY.txt /home/crhea/Dropbox/Thesis/PrimaryFiles/SweepSimulations/Viscosity_10.0/Viscosity.txt
+fix             xwalls all wall/reflect xlo EDGE xhi EDGE
+fix             ywalls all wall/reflect ylo EDGE yhi EDGE
+#fix 		topfix stationary freeze
+fix		2 all nve/sphere
+
+thermo		100
+run		100

@@ -1,0 +1,41 @@
+read_restart  	/home/crhea/Dropbox/Thesis/PrimaryFiles/Front/LAMMPSFILES/restart1
+variable        Diam equal 0.1
+variable	coeffRes equal 0.1
+variable	coeffFric equal 0.5
+
+variable	rlo equal 0.3
+variable	rhi equal 0.6
+variable	dlo equal 2.0*${rlo}
+variable	dhi equal 2.0*${rhi}
+variable 	skin equal ${rhi}
+
+variable	kn equal 10^5
+variable	kt equal 0.2*${kn}
+
+variable	gravity equal 1.0
+variable	density equal 1.0
+
+variable	min_mass equal ${density}*4.0/3.0*PI*${rlo}*${rlo}*${rlo}
+variable	a equal (-2.0*log(${coeffRes})/PI)^2
+variable        gamma_n equal sqrt($a*2*${kn}/${min_mass}/(1+0.25*$a))
+variable        gamma_t equal ${gamma_n}*0.5
+
+
+
+comm_modify	vel yes
+run 		0
+atom_modify	sort 0 0
+change_box 	all y final -0.5 0.5 boundary f f p
+
+#now to print out info
+dump pos 	all custom 100 /home/crhea/Dropbox/Thesis/PrimaryFiles/Front/LAMMPSFILES/pos_lammps_out.txt id type x y z vx vy vz
+restart		100 PrimaryFiles/Front/LAMMPSFILES/restart1 PrimaryFiles/Front/LAMMPSFILES/restart2
+timestep	0.000001
+
+fix		1 all viscous/field 0.5 /home/crhea/Dropbox/Thesis/PrimaryFiles/Front/VelForLammpsX.txt /home/crhea/Dropbox/Thesis/PrimaryFiles/Front/VelForLammpsY.txt /home/crhea/Dropbox/Thesis/PrimaryFiles/Front/Viscosity.txt
+fix xwalls all wall/reflect xlo EDGE xhi EDGE
+fix ywalls all wall/reflect ylo EDGE yhi EDGE
+fix		2 all nve/sphere
+
+thermo		100
+run		100

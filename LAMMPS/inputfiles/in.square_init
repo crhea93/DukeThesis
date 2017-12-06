@@ -1,0 +1,53 @@
+#LJ molecules in a 2D box
+variable        Diam equal 0.01
+variable	coeffRes equal 0.1
+variable	coeffFric equal 0.5
+
+variable	rlo equal 0.3
+variable	rhi equal 0.6
+variable	dlo equal 2.0*${rlo}
+variable	dhi equal 2.0*${rhi}
+variable 	skin equal ${rhi}
+
+variable	kn equal 10^5
+variable	kt equal 0.2*${kn}
+
+variable	gravity equal 1.0
+variable	density equal 1.0
+
+variable	min_mass equal ${density}*4.0/3.0*PI*${rlo}*${rlo}*${rlo}
+variable	a equal (-2.0*log(${coeffRes})/PI)^2
+variable        gamma_n equal sqrt($a*2*${kn}/${min_mass}/(1+0.25*$a))
+variable        gamma_t equal ${gamma_n}*0.5
+
+dimension 	2
+units		si
+atom_style	sphere
+boundary 	f f p
+
+
+read_data       lammps_square_100x100_inc.lj
+region		box block -0.5 0.5 -0.5 0.5 -3 3 units box
+group 		top id 1:100
+group		bottom id 9901:10000
+group		stationary union bottom top
+atom_modify	sort 0 0 
+set 		group all density 0.01
+set 		group all diameter ${Diam}
+
+
+comm_modify	vel yes
+#now to print out info
+dump pos 	all custom 1 /home/crhea/Dropbox/Thesis/PrimaryFiles/Mode1/LAMMPSFILES/pos_lammps_out.txt id type x y z vx vy vz
+restart		1 /home/crhea/Dropbox/Thesis/PrimaryFiles/Mode1/LAMMPSFILES/restart1 /home/crhea/Dropbox/Thesis/PrimaryFiles/Mode1/LAMMPSFILES/restart2
+pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0 2.0 2.0  0.8 0.99 50.0 /home/crhea/Dropbox/Thesis/PrimaryFiles/Mode1/SaturationInterpolated.txt
+pair_coeff	* *
+
+fix		1 all viscous/field 0.5 /home/crhea/Dropbox/Thesis/PrimaryFiles/Mode1/VelForLammpsX.txt /home/crhea/Dropbox/Thesis/PrimaryFiles/Mode1/VelForLammpsY.txt /home/crhea/Dropbox/Thesis/PrimaryFiles/Mode1/Viscosity.txt
+fix xwalls all wall/reflect xlo EDGE xhi EDGE
+fix ywalls all wall/reflect ylo EDGE yhi EDGE
+fix 		topfix stationary freeze
+fix		2 all nve/sphere
+
+timestep 	0.0001
+run		1
