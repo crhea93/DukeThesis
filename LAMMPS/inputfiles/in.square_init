@@ -38,12 +38,12 @@ set 		group all diameter ${Diam}
 
 comm_modify	vel yes
 #now to print out info
-dump pos 	all custom 100 /home/crhea/Dropbox/Thesis/PrimaryFiles/Mode1/LAMMPSFILES/pos_lammps_out.txt id type x y z vx vy vz
-restart		100 /home/crhea/Dropbox/Thesis/PrimaryFiles/Mode1/LAMMPSFILES/restart1 /home/crhea/Dropbox/Thesis/PrimaryFiles/Mode1/LAMMPSFILES/restart2
-pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0 2.0 2.0  0.8 0.99 50.0 /home/crhea/Dropbox/Thesis/PrimaryFiles/Mode1/SaturationInterpolated.txt
+dump pos 	all custom 1 /home/crhea/Documents/Results/Mode1/LAMMPSFILES/pos_lammps_out.txt id type x y z vx vy vz
+restart		1 /home/crhea/Documents/Results/Mode1/LAMMPSFILES/restart1 /home/crhea/Documents/Results/Mode1/LAMMPSFILES/restart2
+pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0  10.0 10.0 0.78 0.99 50.0 /home/crhea/Documents/Results/Mode1/SaturationInterpolated.txt
 pair_coeff	* *
 
-fix		1 all viscous/field 0.5 /home/crhea/Dropbox/Thesis/PrimaryFiles/Mode1/VelForLammpsX.txt /home/crhea/Dropbox/Thesis/PrimaryFiles/Mode1/VelForLammpsY.txt /home/crhea/Dropbox/Thesis/PrimaryFiles/Mode1/Viscosity.txt
+fix		1 all viscous/field 100.0 /home/crhea/Documents/Results/Mode1/VelForLammpsX.txt /home/crhea/Documents/Results/Mode1/VelForLammpsY.txt /home/crhea/Documents/Results/Mode1/Viscosity.txt
 fix xwalls all wall/reflect xlo EDGE xhi EDGE
 fix ywalls all wall/reflect ylo EDGE yhi EDGE
 fix 		topfix stationary freeze

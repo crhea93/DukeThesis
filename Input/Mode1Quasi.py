@@ -36,7 +36,7 @@ def Init_FF(Sim_name,ResultsDir,MooseFileDir,MooseFile,Mesh,Porosity_File,Init_P
     WorkingDirectory = ResultsDir+Sim_name+'/'
     Meshchange = 'file = '+Mesh+'.e'
     outputinitSatPress = "MOOSEValues"
-    InitCircle(Mesh+".e",outputinitSatPress,0.0,0.0,0.1,Init_Press)
+    InitConst(Mesh+".e",outputinitSatPress,Init_Press)
     SatInitName = 'dataFile = '+WorkingDirectory+'MOOSEValues_sat_init.txt'
     PressInitName = 'dataFile = '+WorkingDirectory+'MOOSEValues_press_init.txt'
     PorosityInitName = 'dataFile = '+WorkingDirectory+Porosity_File+'.txt'
@@ -47,7 +47,7 @@ def Init_FF(Sim_name,ResultsDir,MooseFileDir,MooseFile,Mesh,Porosity_File,Init_P
     Press_Out = '     output = '+WorkingDirectory+'MOOSEValues_press_updated'
     OutputName = 'file_base = '+WorkingDirectory+MooseFileDir+'/MOOSEOutput'
     InvadingFluidViscosity = 'water_viscosity = '+str(mui)
-    lines_to_change = [3,66,110,115,120,125,146,151,156,161,184]
+    lines_to_change = [3,79,110,115,120,125,146,151,156,161,184]
     new_lines = [Meshchange,InvadingFluidViscosity,SatInitName,PressInitName,PorosityInitName,PorosityInitNameOld,XvelName,YvelName,Sat_Out,Press_Out,OutputName]
     change_input(MooseFile,lines_to_change,new_lines)
 
