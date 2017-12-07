@@ -8,7 +8,7 @@ Initial Pressure Value
 Mui = viscosity of invading Fluid
 Mud = viscosity of defending Fluid
 '''
-from Input.Sweep import *
+from Input.Mode1Quasi import *
 
 
 # BASIC IMPORTS
@@ -35,7 +35,7 @@ def Setup(Sim_name,ResultsDir,MooseFileDir,LammpsFileDir,ParticlesFile,Porosity_
     if os.path.exists(ResultsDir+Sim_name)!= True:
         os.mkdir(ResultsDir+Sim_name)
     copyfile("/home/crhea/Documents/DukeThesis/porosity_calc/"+Porosity_Filecpp+".cpp",ResultsDir+Sim_name+"/"+Porosity_Filecpp+".cpp")
-    copyfile(ResultsDir+ParticlesFile,ResultsDir+Sim_name+"/"+ParticlesFile)
+    copyfile("/home/crhea/Documents/DukeThesis/ParticleFiles/"+ParticlesFile,ResultsDir+Sim_name+"/"+ParticlesFile)
     os.chdir(ResultsDir+Sim_name+"/")
     if os.path.exists(LammpsFileDir)!=True:
         os.mkdir(LammpsFileDir)
@@ -117,7 +117,7 @@ def runSim(Sim_name,ResultsDir,MooseFileDir,LammpsFileDir,Porosity_Filecpp,Poros
 
 
 def main():
-    viscosities = [1.0,10.0,100.0,500.0]
+    viscosities = [1.0]
     for i in range(len(viscosities)):
         Name_of_Simu = Name_of_Sim+"_"+str(viscosities[i])
         Setup(Name_of_Simu,ResultsDir,MOOSEFILEDIR,LAMMPSFILEDIR,ParticlesInput,PorosityFilecpp,mesh,viscosities[i])

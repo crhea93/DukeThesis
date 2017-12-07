@@ -4,7 +4,7 @@ Input File for Tube with Capillary and Viscous Forces as well as porosity
 Name_of_Sim = 'Mode1'
 MOOSEFILEDIR = 'MOOSEFILES'
 LAMMPSFILEDIR = 'LAMMPSFILES'
-ResultsDir = '/home/crhea/Documents/Results'
+ResultsDir = '/home/crhea/Documents/Results/'
 # FILES FOR INPUT
 #PorosityFileInit = 'constant_Ref1'
 mesh = '/home/crhea/Dropbox/Thesis/Mesh/square_Ref1'

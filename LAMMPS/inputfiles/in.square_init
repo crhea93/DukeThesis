@@ -38,8 +38,8 @@ set 		group all diameter ${Diam}
 
 comm_modify	vel yes
 #now to print out info
-dump pos 	all custom 1 /home/crhea/Dropbox/Thesis/PrimaryFiles/Mode1/LAMMPSFILES/pos_lammps_out.txt id type x y z vx vy vz
-restart		1 /home/crhea/Dropbox/Thesis/PrimaryFiles/Mode1/LAMMPSFILES/restart1 /home/crhea/Dropbox/Thesis/PrimaryFiles/Mode1/LAMMPSFILES/restart2
+dump pos 	all custom 100 /home/crhea/Dropbox/Thesis/PrimaryFiles/Mode1/LAMMPSFILES/pos_lammps_out.txt id type x y z vx vy vz
+restart		100 /home/crhea/Dropbox/Thesis/PrimaryFiles/Mode1/LAMMPSFILES/restart1 /home/crhea/Dropbox/Thesis/PrimaryFiles/Mode1/LAMMPSFILES/restart2
 pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0 2.0 2.0  0.8 0.99 50.0 /home/crhea/Dropbox/Thesis/PrimaryFiles/Mode1/SaturationInterpolated.txt
 pair_coeff	* *
 
@@ -50,4 +50,4 @@ fix 		topfix stationary freeze
 fix		2 all nve/sphere
 
 timestep 	0.0001
-run		1
+run		100
