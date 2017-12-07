@@ -33,10 +33,11 @@ from pythonCode.MOOSE.InitSatPorCircle import InitConst
 from pythonCode.Cohesion.ChangeFiles import change_input
 
 def Init_FF(Sim_name,MooseFileDir,MooseFile,Mesh,Porosity_File,Init_Press):
-    WorkingDirectory = '/home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/'
+def Init_FF(Sim_name,ResultsDir,MooseFileDir,MooseFile,Mesh,Porosity_File,Init_Press,mui):
+    WorkingDirectory = ResultsDir+Sim_name+'/'
     Meshchange = 'file = '+Mesh+'.e'
     outputinitSatPress = "MOOSEValues"
-    InitConst(Mesh+".e",outputinitSatPress,Init_Press)
+    InitCircle(Mesh+".e",outputinitSatPress,0.0,0.0,0.1,Init_Press)
     SatInitName = 'dataFile = '+WorkingDirectory+'MOOSEValues_sat_init.txt'
     PressInitName = 'dataFile = '+WorkingDirectory+'MOOSEValues_press_init.txt'
     PorosityInitName = 'dataFile = '+WorkingDirectory+Porosity_File+'.txt'
@@ -46,25 +47,25 @@ def Init_FF(Sim_name,MooseFileDir,MooseFile,Mesh,Porosity_File,Init_Press):
     Sat_Out = '     output = '+WorkingDirectory+'MOOSEValues_sat_updated'
     Press_Out = '     output = '+WorkingDirectory+'MOOSEValues_press_updated'
     OutputName = 'file_base = '+WorkingDirectory+MooseFileDir+'/MOOSEOutput'
-
-    lines_to_change = [3,110,115,120,125,146,151,156,161,184]
-    new_lines = [Meshchange,SatInitName,PressInitName,PorosityInitName,PorosityInitNameOld,XvelName,YvelName,Sat_Out,Press_Out,OutputName]
+    InvadingFluidViscosity = 'water_viscosity = '+str(mui)
+    lines_to_change = [3,66,110,115,120,125,146,151,156,161,184]
+    new_lines = [Meshchange,InvadingFluidViscosity,SatInitName,PressInitName,PorosityInitName,PorosityInitNameOld,XvelName,YvelName,Sat_Out,Press_Out,OutputName]
     change_input(MooseFile,lines_to_change,new_lines)
 
 
 # CHANGE FLUID FLOW MOOSE INPUT FILE
-def Update_Moose_after_Init(Sim_name,Mesh,MooseFile,Porosity_File):
-    WorkingDirectory = '/home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/'
+def Update_Moose_after_Init(Sim_name,ResultsDir,Mesh,MooseFile,Porosity_File):
+    WorkingDirectory = ResultsDir+Sim_name+'/'
     SatInitName = 'dataFile = '+WorkingDirectory+'MOOSEValues_sat_updated.txt'
     PressInitName = 'dataFile = '+WorkingDirectory+'MOOSEValues_press_updated.txt'
     PorosityInitName = 'dataFile = '+WorkingDirectory+Porosity_File+'.txt'
-    PorosityInitNameOld = 'dataFile = '+WorkingDirectory+Porosity_File+'.txt'
+    PorosityInitNameOld = 'dataFile = '+WorkingDirectory+Porosity_File+'_old.txt'
     lines_to_change = [110,115,120,125]
     new_lines = [SatInitName,PressInitName,PorosityInitName,PorosityInitNameOld]
     change_input(MooseFile,lines_to_change,new_lines)
 
-def Update_MOOSE(Sim_name,MooseFile,Porosity_File,time_Step):
-    WorkingDirectory = '/home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/'
+def Update_MOOSE(Sim_name,ResultsDir,MooseFile,Porosity_File,time_Step):
+    WorkingDirectory = ResultsDir+Sim_name+'/'
     PorosityInitName = 'dataFile = '+WorkingDirectory+Porosity_File+'.txt'
     PorosityInitNameOld = 'dataFile = '+WorkingDirectory+Porosity_File+'_old.txt'
     #OutputName = 'file_base = PrimaryFiles/'+Sim_name+'/MOOSEFILES/MOOSEOutput'+str(time_Step)
@@ -73,13 +74,13 @@ def Update_MOOSE(Sim_name,MooseFile,Porosity_File,time_Step):
     change_input(MooseFile,lines_to_change,new_lines)
 
 # CHANGE LAMMPS INPUT FILE
-def Update_Lammps_Init(Sim_name,LammpsFileDir,LammpsFile,ParticlesInput,Diameter,DomainVals):
+def Update_Lammps_Init(Sim_name,ResultsDir,LammpsFileDir,LammpsFile,ParticlesInput,Diameter,DomainVals):
     DiameterData = 'variable        Diam equal '+str(Diameter)
     InitData = 'read_data       '+ParticlesInput
-    Dump = 'dump pos 	all custom 1 /home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/'+LammpsFileDir+'/pos_lammps_out.txt id type x y z vx vy vz'
-    Restart = 'restart		1 /home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/'+LammpsFileDir+'/restart1 /home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/'+LammpsFileDir+'/restart2'
-    Fix1 = 'fix		1 all viscous/field 0.5 /home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/VelForLammpsX.txt /home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/VelForLammpsY.txt /home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/Viscosity.txt'
-    Hookean = 'pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0 2.0 2.0 1.0 0.8 50.0 '+'/home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/SaturationInterpolated.txt'
+    Dump = 'dump pos 	all custom 1 '+ResultsDir+Sim_name+'/'+LammpsFileDir+'/pos_lammps_out.txt id type x y z vx vy vz'
+    Restart = 'restart		1 '+ResultsDir+Sim_name+'/'+LammpsFileDir+'/restart1 '+ResultsDir+Sim_name+'/'+LammpsFileDir+'/restart2'
+    Fix1 = 'fix		1 all viscous/field 100.0 '+ResultsDir+Sim_name+'/VelForLammpsX.txt '+ResultsDir+Sim_name+'/VelForLammpsY.txt '+ResultsDir+Sim_name+'/Viscosity.txt'
+    Hookean = 'pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0  10.0 10.0 0.78 0.99 50.0 '+ResultsDir+Sim_name+'/SaturationInterpolated.txt'
     if len(Domain) == 4: #Rectangle
         DomainSet = 'region		box block '+str(DomainVals[0])+' '+str(DomainVals[1]) + ' '+str(DomainVals[2])+' '+str(DomainVals[3])+' -3 3 units box'
         lines_to_change = [2,29,30,41,42,43,46]
@@ -90,20 +91,21 @@ def Update_Lammps_Init(Sim_name,LammpsFileDir,LammpsFile,ParticlesInput,Diameter
     change_input(LammpsFile+"_init",lines_to_change,new_line_lammps)
 
 
-def Update_Lammps(Sim_name,LammpsFileDir,LammpsFile):
-    RestartRead = 'read_restart  	/home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/'+LammpsFileDir+'/restart1'
-    Dump = 'dump pos 	all custom 1 /home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/'+LammpsFileDir+'/pos_lammps_out.txt id type x y z vx vy vz'
-    Restart = 'restart		1 /home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/'+LammpsFileDir+'/restart1 /home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/'+LammpsFileDir+'/restart2'
-    Fix1 = 'fix		1 all viscous/field 0.5 /home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/VelForLammpsX.txt /home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/VelForLammpsY.txt /home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/Viscosity.txt'
-    Hookean = 'pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0 2.0 2.0 1.0 0.078 50.0 '+'/home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/SaturationInterpolated.txt'
+def Update_Lammps(Sim_name,ResultsDir,LammpsFileDir,LammpsFile):
+    RestartRead = 'read_restart  	'+ResultsDir+Sim_name+'/'+LammpsFileDir+'/restart1'
+    Dump = 'dump pos 	all custom 1 '+ResultsDir+Sim_name+'/'+LammpsFileDir+'/pos_lammps_out.txt id type x y z vx vy vz'
+    Restart = 'restart		1 '+ResultsDir+Sim_name+'/'+LammpsFileDir+'/restart1 '+ResultsDir+Sim_name+'/'+LammpsFileDir+'/restart2'
+    Fix1 = 'fix		1 all viscous/field 100.0 '+ResultsDir+Sim_name+'/VelForLammpsX.txt '+ResultsDir+Sim_name+'/VelForLammpsY.txt '+ResultsDir+Sim_name+'/Viscosity.txt'
+    Hookean = 'pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0  10.0 10.0 0.78 0.99 50.0 '+ResultsDir+Sim_name+'/SaturationInterpolated.txt'
     lines_to_change = [1,34,35,40,44]
     new_line_lammps2 = [RestartRead,Dump,Restart,Hookean,Fix1]
     change_input(LammpsFile,lines_to_change,new_line_lammps2)
 
-def Update_Porosity(Sim_name,LammpsFileDir,Porosity_file,Mesh,nparticles,radius,nnodes,nelements,ann_r,dom_r,NN):
-    input_path = "string input_path = \"/home/crhea/Dropbox/Thesis/Mesh/\";"
-    input_path_lammps_Data = "string input_path_lammps_Data = \"/home/crhea/Dropbox/Thesis/PrimaryFiles/"+Sim_name+"/"+LammpsFileDir+"/\";"
-    output_path = "string output_path = \"/home/crhea/Dropbox/Thesis/PrimaryFiles/"+Sim_name+"/\";"
+
+def Update_Porosity(Sim_name,ResultsDir,LammpsFileDir,Porosity_file,Mesh,nparticles,radius,nnodes,nelements,ann_r,dom_r,NN):
+    input_path = "string input_path = \"/home/crhea/Documents/DukeThesis/Mesh/\";"
+    input_path_lammps_Data = "string input_path_lammps_Data = \""+ResultsDir+Sim_name+"/"+LammpsFileDir+"/\";"
+    output_path = "string output_path = \""+ResultsDir+Sim_name+"/\";"
     mesh_to_read = "string mesh_to_read = \""+Mesh+"_nodes\";"
     mesh_connectivity = "string mesh_connectivity = \""+Mesh+"_connectivity\";"
     file_name = "string file_name = \"lammps_pos_out_simple\";"
@@ -115,6 +117,7 @@ def Update_Porosity(Sim_name,LammpsFileDir,Porosity_file,Mesh,nparticles,radius,
     num_of_NN = 'int num_of_NN = '+str(NN)+';'
     num_partic_lines = 'int nparticles = '+str(nparticles)+';'
     rad = 'double particle_rad = '+str(radius)+';'
-    lines_to_change =  [638,639,640,641,642,643,644,645,646,647,649,651,653,654]
+    #lines_to_change =  [555,556,557,558,559,560,561,562,563,564,566,568,570,571] #parallel
+    lines_to_change = [638,639,640,641,642,643,644,645,646,647,649,651,653,654]
     new_lines = [input_path,input_path_lammps_Data,output_path,mesh_to_read,mesh_connectivity,file_name,output,domain_radius,annulus_radius,num_partic_lines,nnodes,number_cell_elements,num_of_NN,rad]
-    change_input('/home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/'+Porosity_file+'.cpp',lines_to_change,new_lines)
+    change_input(ResultsDir+Sim_name+'/'+Porosity_file+'.cpp',lines_to_change,new_lines)
