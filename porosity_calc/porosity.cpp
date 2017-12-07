@@ -265,14 +265,7 @@ tuple<map<int,vector<int>>,map<int,vector<int>>,map<int,int>,map<int,int>> Neare
 
     //cout<<x_mesh_res[0]<<" "<<x_mesh[21]<<endl;
     // Populate cells with nodes and particles
-    int in_count = 0;
-    int in1 = 0;
-    int in2 = 0;
-  #pragma omp sections
-  {
-    #pragma omp section
-    {
-    //int in_count=0;
+    int in_count=0;
     for (int i=0;i<*pmesh;i++){ //all mesh
         for (int j=0;j<grid_size_mesh-1;j++){ // x positions of grid
             for (int k=0;k<grid_size_mesh-1;k++){ // y positions of grid
@@ -280,16 +273,14 @@ tuple<map<int,vector<int>>,map<int,vector<int>>,map<int,int>,map<int,int>> Neare
 
                 if (((x_mesh[i]>=x_grid_mesh[j])&&(x_mesh[i]<x_grid_mesh[j+1]))&&((y_mesh[i]>=y_grid_mesh[k])&&(y_mesh[i]<y_grid_mesh[k+1]))){ //push back index
                     cells[j][k].mesh_ind.push_back(i); //ex) i=1,j=2 ==> cell (22) look at diagram. That is also second row and third column
-                    in1++;
-                }//end if
+                    in_count++;
+                }
 
-          }//end k
-        }//end j
-    }//end i
-  }//end section
-    #pragma omp section
-    {
-      //in2 = 0;
+            }
+        }
+    }
+    //cout<<"Done with populating cells with nodes"<<endl;
+    //cout<<in_count<<endl;
     for (int i=0;i<*pnparticles;i++){ //all particles
         for (int j=0;j<grid_size_mesh-1;j++){ // x positions of grid
             for (int k=0;k<grid_size_mesh-1;k++){ // y positions of grid
@@ -297,14 +288,12 @@ tuple<map<int,vector<int>>,map<int,vector<int>>,map<int,int>,map<int,int>> Neare
                 if (((x_pos[i]>x_grid_mesh[j])&&(x_pos[i]<=x_grid_mesh[j+1]))&&((y_pos[i]>y_grid_mesh[k])&&(y_pos[i]<=y_grid_mesh[k+1]))){ //push back index
                     cells[j][k].indices.push_back(i); //ex) i=1,j=2 ==> cell (22) look at diagram. That is also second row and third column
                     //cout << "IN!"<<endl;
-                    in2++;
-                }//end if
-            }//end k
-        }//end j
-    }//end i
-  }//end section
-}//end sections
-  in_count = in1+in2;
+                    in_count++;
+                }
+            }
+        }
+    }
+
     vector<int> ind;
     map<int, vector<int>> NN_part;
     map<int,int> Cell_part; //Map between particle and cell number
@@ -314,11 +303,8 @@ tuple<map<int,vector<int>>,map<int,vector<int>>,map<int,int>,map<int,int>> Neare
     vector<int> part_ind;
     map <int, vector<int>> NN_mesh;
     map <int,int> Cell_mesh;
-    #pragma omp parallel
-    {
     int mesh_nodes_number = 0;
-    int number_in = 0;
-    #pragma omp for private(part_ind) schedule(dynamic,10)
+
     for (int i=0;i<grid_size_mesh-1;i++){
         for(int j=0; j<grid_size_mesh-1;j++){
             if (cells[i][j].mesh_ind.size() >0){
@@ -336,7 +322,6 @@ tuple<map<int,vector<int>>,map<int,vector<int>>,map<int,int>,map<int,int>> Neare
                                     for (int part_in_cell=0;part_in_cell<cells[i+m][j+n].indices.size();part_in_cell++){
                                         int particle = cells[i+m][j+n].indices[part_in_cell];
                                         part_ind.push_back(particle);
-                                        number_in++;
                                     }
                                 }
                                 else{
@@ -348,6 +333,7 @@ tuple<map<int,vector<int>>,map<int,vector<int>>,map<int,int>,map<int,int>> Neare
                         //cout<<"We have found this many particles in the cell for node number "<<mesh_ind<<": "<<part_ind.size()<<endl;
 
                     }//end while loop so found enough particles
+
 
 
                     mesh_nodes_number ++;
@@ -376,7 +362,7 @@ tuple<map<int,vector<int>>,map<int,vector<int>>,map<int,int>,map<int,int>> Neare
 
         }//end of j
     }//end of i and nearest neighbor search
-  }//end parallel
+
 
 
     return make_tuple(NN_part,NN_mesh,Cell_part,Cell_mesh);
@@ -402,10 +388,12 @@ void node::Packing_Fraction_Calculation(double domain_radius, double annulus_rad
     double A_annulus = 0.0;
     A_annulus = ann_area_calc(annulus_x,annulus_y,annulus_radius, domain_radius);
     //Now to calculate our different areas.
-    int i;
-    #pragma omp for private(i)
-    for (i=0;i<dist.size();i++){
-
+    for (int i=0;i<dist.size();i++){
+        //if (distances(x_pos[i],y_pos[i],0.0,0.0)>domain_radius){//particle not totally in domain
+        //    cout<<"particle not in annulus"<<endl;
+        //    A_total += 0.0; //for now set to zero. Soon we need to do 3 circle intersection!
+        //}
+        //else{//particle totally in domain
             if(dist[i] <= inner){
                 A_in_total += A_in_calc(rad[i],annulus_radius);
             }
@@ -422,7 +410,17 @@ void node::Packing_Fraction_Calculation(double domain_radius, double annulus_rad
     }//end of iteration
     // now for calculating the Packing Fraction
     A_total = A_in_total+A_mid_total+A_out_total;
-    packing_fraction = A_total/A_annulus+1e-4;
+    /*if (A_total==0){
+        cout<<"I am positioned at : "<<annulus_x<<" " <<annulus_y<<endl;
+        cout<<"The number of particles near this annulus are: "<<dist.size()<<endl;
+        cout<<"The distance between the first particle and the annulus' center is: "<<dist[0]<<endl;*/
+//  cout<<"A_total is :"<<A_total<<endl;
+        //cout<<"A_annulus is:"<<A_annulus<<endl;
+        //cout<<" "<<endl;
+    //}
+    packing_fraction = A_total/A_annulus+1e-2;
+    //std::cout<<packing_fraction<<std::endl;
+    //return PF;
 }
 
 
@@ -431,40 +429,60 @@ int create(string input_path_initial_data, string output_path, string mesh_to_re
     //now we determine the x,y coordinate pairs corresponding to nodes given by Christian
     string line1;
     vector<vector<double>> Values(*pnnodes,vector<double>(2));
+    //string filename;
     ifstream fileIN1;
+
     fileIN1.open(mesh_to_read+".txt");
+
+    //
+    //read data file
     while(fileIN1){
+
         for(int i=0;i<*pnnodes;i++){
             for (int j=0;j<2;j++){
                 fileIN1 >> Values[i][j];
             }
         }
+
     }
+    cout<<"We have finished reading in all of the mesh nodes!"<<endl;
     fileIN1.close();
     vector<double> x_grid(*pnnodes);
     vector<double> y_grid(*pnnodes);
+
+
     for(int i = 0; i < *pnnodes; i++){
         x_grid[i] = Values[i][0];
     }
+
     for(int i = 0; i < *pnnodes; i++){
         y_grid[i] = Values[i][1];
     }
+
     fileIN1.close();
     //done reading in mesh
+
+    // Simply some housekeeping so that we can properly read in the file as an array
 
     vector<vector<double>> Values_part(*pnparticles,vector<double>(2));//number depends on mesh file read in
     //string filename;
     ifstream fileIN2;
     //Reading in particles from LAMMPSFILES
+    std::cout<<"Reading in LAMMPS Data"<<std::endl;
     fileIN2.open(input_path_initial_data+file_name+".txt");
     std::cout<<input_path_initial_data+file_name+".txt"<<std::endl;
     while(fileIN2){
         for(int i=0;i<*pnparticles;i++){
             for (int j=0;j<2;j++){
                 fileIN2 >> Values_part[i][j];
+              //  std::cout<<Values_part[i][j]<<" ";
 
           }//end if
+        //  std::cout<<" "<<std::endl;
         }
+
+        //std::cout<<" "<<std::endl;
+
     }
     fileIN2.close();
     //cout<<"Starting to set up particle informational vectors"<<endl;
@@ -479,18 +497,37 @@ int create(string input_path_initial_data, string output_path, string mesh_to_re
         rad[i] = particle_rad;
 
     }
+
+    //cout<<"We have finished reading in all of the particles!"<<endl;
+
+
+
     //read in the mesh connectivity...
     ifstream fileIN3;
+    //values from matlab must have 1 subtracted
+
     vector<vector<double>>Values_mesh(*number_cell_elements,vector<double>(4));
+
     fileIN3.open(mesh_connectivity+".txt");
+    std::cout<<"Reading in connectivity"<<std::endl;
+    //
+    //read data file
     while(fileIN3){
+
         for(int i=0;i<*number_cell_elements;i++){
             for (int j=0;j<4;j++){
                 fileIN3 >> Values_mesh[i][j];
+
             }
         }
     }
+    //cout<<"We have finished reading in all of the mesh connectivity elements!"<<endl;
+
     fileIN3.close();
+
+
+
+
     //lets calculate the max radius value first since we need it to calculate the minimum radius.
     double max_rad;
     max_rad = max_val_vec(rad);
@@ -501,11 +538,15 @@ int create(string input_path_initial_data, string output_path, string mesh_to_re
     double med_rad;
     med_rad = (max_rad+min_rad)/2.0;
     //end reading in data from particles files
+
     //calculate max x-val to pass into nearest neighborbor search if not dealing with circular geometry
     double max_x_val;
     max_x_val = max_val_vec(x_pos);
+
     //list of nearest neighbors for the particles
+    //NN_particles = Nearest_neightbors(pnparticles, x_pos, y_pos, 10)
     //list of nearest neighbors for the mesh points
+    //cout<<"We are starting the Nearest Neighbor Algorithm!"<<endl;
     tuple<map<int,vector<int>>,map<int,vector<int>>,map<int,int>,map<int,int>> NNs = Nearest_neightbors_both(pnparticles, pnnodes, x_pos, y_pos, x_grid, y_grid,max_x_val,num_of_NN);
     //cout<<"We just finished the Nearest Neighbor Algorithm!"<<endl;
     map<int,vector<int>> NN_parts = get<0>(NNs);
@@ -514,11 +555,23 @@ int create(string input_path_initial_data, string output_path, string mesh_to_re
     map<int,int> Cell_meshes = get<3>(NNs);
     string ann_rad = to_string(annulus_radius);
     // Create array of x,y,and corrresponding z values
+    ofstream out;
+    out.open("/Users/crhea/Desktop/total.txt");
+
+    //vector<vector<double>> PF(*pnnodes,vector<double>(3));
+    //node nodes[*pnnodes];
     node* nodes;
     nodes = new node[*pnnodes]; //create array of class of nodes
+    //cout<<"We are beginning to calculate the packing fractions!"<<endl;
     for(int count=0;count<*pnnodes;count++){
+        //PF[count][0] = x_grid[count]/100.;
+        //PF[count][1] = y_grid[count]/100.;
+        //PF[count][2] = 0.0;
         nodes[count].x = x_grid[count];
         nodes[count].y = y_grid[count];
+
+        //cout<<nodes[count].x<<endl;
+
         //check if annulus is in domain (though it should be for this!)
         double dist_ann_dom = distances(x_grid[count],y_grid[count],0.0,0.0);
         if (dist_ann_dom <= domain_radius+max_rad){//only bother running through calculations if annulus is in the domain!
@@ -537,12 +590,36 @@ int create(string input_path_initial_data, string output_path, string mesh_to_re
                 rad_in_annulus.push_back(rad[particles_in_annulus[part]]);
                 in++;
             } // get info for each particle
+            //if (in==0){
+
+            //}
             nodes[count].Packing_Fraction_Calculation(domain_radius, annulus_radius, x_grid[count], y_grid[count], max_rad, x_in_annulus, y_in_annulus, rad_in_annulus, dist_in_annulus);
         }//end if annulus in domain
+//string file_name = "lammps_pos_out_simple";
+      //      cout<<"outside"<<endl;
         }
+    //}//end count
+    //out.close();
+    /*ofstream outputfile;
+    outputfile.open(output_path+outputname+".vtk");
+
+
+    outputfile<< "# vtk DataFile Version 2.0" <<'\n';
+    outputfile<<"Packing Fraction Fields"<<'\n';
+    outputfile<< "ASCII"<<'\n';
+    outputfile<<"DATASET UNSTRUCTURED_GRID"<<'\n';
+    outputfile<<"POINT_DATA "<< *pnnodes<<'\n';
+    outputfile<<"SCALARS PackingFraction double"<<'\n';
+    outputfile<<"LOOKUP_TABLE default"<<'\n';
+    for (int count=0;count<*pnnodes;count++) {
+        outputfile << nodes[count].packing_fraction << '\n';
+    }
+    outputfile.close();
+    */
 
     ofstream outputfile2;
     outputfile2.open(output_path+outputname+".txt");
+
     for(int i=0;i<*pnnodes;i++){
         outputfile2<<double(nodes[i].x)<<" "<<double(nodes[i].y)<<" "<<double(nodes[i].packing_fraction)<<" "<<endl;
     }
@@ -551,6 +628,12 @@ int create(string input_path_initial_data, string output_path, string mesh_to_re
     return 0;
 }
 
+
+
+
+
+
+
 int main(){
 string input_path = "/home/crhea/Documents/DukeThesis/Mesh/";
 string input_path_lammps_Data = "/home/crhea/Dropbox/Thesis/PrimaryFiles/SweepSimulations/Test/LAMMPSFILES/";
@@ -558,7 +641,7 @@ string output_path = "/home/crhea/Documents/DukeThesis/";
 string mesh_to_read = "/home/crhea/Documents/DukeThesis/Mesh/Central_Square_nodes";
 string mesh_connectivity = "/home/crhea/Documents/DukeThesis/Mesh/Central_Square_connectivity";
 string file_name = "lammps_pos_out_simple";
-string outputname = "porosity_openmp";
+string outputname = "porosity_standard";
 double domain_radius = 1.8;
 double annulus_radius = 0.02;
 int nparticles = 9960;
@@ -569,6 +652,8 @@ int number_cell_elements = 9944;
       int* pnumber_cell_elements = &number_cell_elements;
 int num_of_NN = 100;
 double particle_rad = 0.005;
+    //create(input_path, input_path_lammps_Data,output_path,mesh_to_read,mesh_connectivity, file_name,outputname, domain_radius, annulus_radius, pnparticles, pnnodes,pnumber_cell_elements,num_of_NN,particle_rad);
     create(input_path_lammps_Data,output_path,mesh_to_read,mesh_connectivity, file_name,outputname, domain_radius, annulus_radius, pnparticles, pnnodes,pnumber_cell_elements,num_of_NN,particle_rad);
+
     return 0;
 }

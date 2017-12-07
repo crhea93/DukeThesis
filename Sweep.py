@@ -57,8 +57,8 @@ def runSim(Sim_name,MooseFileDir,LammpsFileDir,Porosity_Filecpp,PorosityFileMOOS
     Update_Porosity(Sim_name,LammpsFileDir,Porosity_Filecpp,Mesh,Num_parts,Diameter/2.0,num_nodes,num_elem,Ann_rad,Dom_rad,NN)
     print("Reconfig Input file for the C++ file")
     reconfigInit(Sim_name,LammpsFileDir,ParticlesFile,Num_parts)
-    os.system('g++ -o porosity porosity.cpp')
-    os.system('./porosity')
+    os.system('g++ -o porosity_openmp -fopenmp porosity_openmp.cpp')
+    os.system('./porosity_openmp')
     copyfile("Porosity.txt","Porosity_old.txt")
     Init_FF(Sim_name,MooseFileDir,MooseFile,Mesh,PorosityFileMOOSE,In_Press,Mui)
     # -------------- DONE WITH INITIALIZATION ----------------------#
@@ -97,9 +97,9 @@ def runSim(Sim_name,MooseFileDir,LammpsFileDir,Porosity_Filecpp,PorosityFileMOOS
             Update_Porosity(Sim_name,LammpsFileDir,Porosity_Filecpp,Mesh,Num_parts,Diameter/2.0,num_nodes,num_elem,Ann_rad,Dom_rad,NN)
             print("Reconfig Input file for the C++ file")
             reconfig(Sim_name,LammpsFileDir,"/home/crhea/Dropbox/Thesis/PrimaryFiles/"+Sim_name+"/"+LammpsFileDir+"/pos_lammps_out.txt",Num_parts)
-            os.system('g++ -o porosity porosity.cpp')
+            os.system('g++ -o porosity_openmp -fopenmp porosity_openmp.cpp')
             start = time.time()
-            os.system('./porosity')
+            os.system('./porosity_openmp')
             end = time.time()
             print("Total Time for porosity calculations "+str(end-start))
         else:

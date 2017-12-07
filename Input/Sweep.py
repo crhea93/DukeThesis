@@ -116,6 +116,6 @@ def Update_Porosity(Sim_name,LammpsFileDir,Porosity_file,Mesh,nparticles,radius,
     num_of_NN = 'int num_of_NN = '+str(NN)+';'
     num_partic_lines = 'int nparticles = '+str(nparticles)+';'
     rad = 'double particle_rad = '+str(radius)+';'
-    lines_to_change =  [638,639,640,641,642,643,644,645,646,647,649,651,653,654]
+    lines_to_change =  [555,556,557,558,559,560,561,562,563,564,566,568,570,571]
     new_lines = [input_path,input_path_lammps_Data,output_path,mesh_to_read,mesh_connectivity,file_name,output,domain_radius,annulus_radius,num_partic_lines,nnodes,number_cell_elements,num_of_NN,rad]
     change_input('/home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/'+Porosity_file+'.cpp',lines_to_change,new_lines)
