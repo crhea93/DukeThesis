@@ -30,7 +30,7 @@ def Moose_append_timestep(directory,filename,timestep):
 def Moose_append_init(directory,filename):
     filename_no_ext = os.path.splitext(filename)[0]
     #copyfile(directory+filename,directory+filename_no_ext+'.e-s.000')
-
+    print(directory+filename)
     nc = netCDF4.Dataset(directory+filename)
     por = nc.variables['vals_nod_var7'][1]
     pp = nc.variables['vals_nod_var9'][1]
@@ -43,5 +43,5 @@ def Moose_append_init(directory,filename):
     for i in range(len(x)):
         fileout.write(str(x[i])+","+str(y[i])+","+str(pp[i])+","+str(sat[i])+","+str(por[i])+'\n')
 
-def MooseRenamePorosity(Sim_name):
-    copyfile('/home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/Porosity.txt', '/home/crhea/Dropbox/Thesis/PrimaryFiles/'+Sim_name+'/Porosity_old.txt')
+def MooseRenamePorosity(Sim_name,Resultsdir):
+    copyfile(Resultsdir+Sim_name+'/Porosity.txt', Resultsdir+Sim_name+'/Porosity_old.txt')

@@ -6,7 +6,7 @@
 import netCDF4
 import numpy as np
 
-exodus_file = '/home/crhea/Dropbox/Thesis/Mesh/Central_Square.e'
+exodus_file = '/home/crhea/Documents/DukeThesis/Mesh/Sweep1.e'
 element_type = 'T3' #'Q4' or 'T3'
 nc = netCDF4.Dataset(exodus_file)
 x = nc.variables['coord'][0]
@@ -16,8 +16,8 @@ connect = nc.variables['connect1']
 
 ##output files
 
-nodes_outputfile_name = '/home/crhea/Dropbox/Thesis/Mesh/Central_Square_nodes.txt'
-connect_outputfile_name = '/home/crhea/Dropbox/Thesis/Mesh/Central_Square_connectivity.txt'
+nodes_outputfile_name = '/home/crhea/Documents/DukeThesis/Mesh/Sweep1_nodes.txt'
+connect_outputfile_name = '/home/crhea/Documents/DukeThesis/Mesh/Sweep1_connectivity.txt'
 nodes_out = open(nodes_outputfile_name,'w') #file printout nodes
 connect_out = open(connect_outputfile_name,'w') #file printout connectivity
 

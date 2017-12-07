@@ -32,10 +32,10 @@ def InitCircle(mesh,output,xCen,yCen,Rad,press_val):
         aux_dist = np.sqrt((x_cur-xCen)**2+(yCen-y_cur)**2)
         if aux_dist < Rad:
             current_value_sat = max_sat-max_sat*(aux_dist/Rad)
-            current_value_press = press_val-press_val*(aux_dist/Rad)
+            current_value_press = press_val*(aux_dist/Rad)
         else:
-            current_value_sat = 0.0
-            current_value_press = 0.0
+            current_value_sat = 0.0+1e-5
+            current_value_press = press_val
 
         sat_values[i] = current_value_sat
         pore_values[i] = current_value_press
