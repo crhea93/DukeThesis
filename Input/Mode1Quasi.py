@@ -32,7 +32,6 @@ NN_number = 100 #Number of nearest neighbors
 from pythonCode.MOOSE.InitSatPorCircle import InitConst
 from pythonCode.Cohesion.ChangeFiles import change_input
 
-def Init_FF(Sim_name,MooseFileDir,MooseFile,Mesh,Porosity_File,Init_Press):
 def Init_FF(Sim_name,ResultsDir,MooseFileDir,MooseFile,Mesh,Porosity_File,Init_Press,mui):
     WorkingDirectory = ResultsDir+Sim_name+'/'
     Meshchange = 'file = '+Mesh+'.e'
