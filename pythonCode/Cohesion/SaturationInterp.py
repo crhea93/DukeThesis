@@ -13,7 +13,7 @@ def sat_int(SaturationFile,ParticleField,num_part,output):
         lineSplit = line.split(" ")
         sat_data[linecount,0] = lineSplit[0]
         sat_data[linecount,1] = lineSplit[1]
-        sat_data[linecount,1] = lineSplit[2]
+        sat_data[linecount,2] = lineSplit[2]
         linecount += 1
     # Now read in LAMMPS DATA
     linenumber = 0

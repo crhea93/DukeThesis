@@ -5,17 +5,17 @@ Input File for Front with Capillary and Viscous Forces
 Name_of_Sim = 'SweepSimulations/Viscosity'
 MOOSEFILEDIR = 'MOOSEFILES'
 LAMMPSFILEDIR = 'LAMMPSFILES'
-ResultsDir = '/home/crhea/Documents/Results/'
+ResultsDir = '/media/crhea/Data/Results/Thesis/'
 # FILES FOR INPUT
-mesh = '/home/crhea/Documents/DukeThesis/Mesh/Central_Square'
+mesh = '/home/crhea/Documents/DukeThesis/Mesh/Disk'
 MooseFile = '/home/crhea/Documents/DukeThesis/bat/input/Radial.i'
-LammpsFile = '/home/crhea/Documents/DukeThesis/LAMMPS/inputfiles/in.central_square'
-ParticlesInput = 'lammps_circle_hydrostatic.lj'
+LammpsFile = '/home/crhea/Documents/DukeThesis/LAMMPS/inputfiles/in.disk'
+ParticlesInput = 'hydrostatic_equil_circle.lj'
 PorosityFilecpp = 'porosity'
 PorosityFileforMOOSE = 'Porosity'
 # VALUES FOR INPUT
 initial_press = 0.0+10**(-5)
-number_particles = 9960
+number_particles = 7764
 number_times = 1000
 particle_diameter = 0.01
 Porosity_Boolean = True
@@ -79,15 +79,10 @@ def Update_Lammps_Init(Sim_name,ResultsDir,LammpsFileDir,LammpsFile,ParticlesInp
     InitData = 'read_data       '+ParticlesInput
     Dump = 'dump pos 	all custom 1 '+ResultsDir+Sim_name+'/'+LammpsFileDir+'/pos_lammps_out.txt id type x y z vx vy vz'
     Restart = 'restart		1 '+ResultsDir+Sim_name+'/'+LammpsFileDir+'/restart1 '+ResultsDir+Sim_name+'/'+LammpsFileDir+'/restart2'
-    Fix1 = 'fix		1 all viscous/field 100.0 '+ResultsDir+Sim_name+'/VelForLammpsX.txt '+ResultsDir+Sim_name+'/VelForLammpsY.txt '+ResultsDir+Sim_name+'/Viscosity.txt'
+    Fix1 = 'fix		1 all viscous/field 1.0 '+ResultsDir+Sim_name+'/VelForLammpsX.txt '+ResultsDir+Sim_name+'/VelForLammpsY.txt '+ResultsDir+Sim_name+'/Viscosity.txt'
     Hookean = 'pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0  10.0 10.0 0.78 0.99 50.0 '+ResultsDir+Sim_name+'/SaturationInterpolated.txt'
-    if len(Domain) == 4: #Rectangle
-        DomainSet = 'region		box block '+str(DomainVals[0])+' '+str(DomainVals[1]) + ' '+str(DomainVals[2])+' '+str(DomainVals[3])+' -3 3 units box'
-        lines_to_change = [2,29,30,41,42,43,46]
-    else:
-        #cirlce
-        pass
-    new_line_lammps = [DiameterData,InitData,DomainSet,Dump,Restart,Hookean,Fix1]
+    lines_to_change = [2,29,41,42,43,46]
+    new_line_lammps = [DiameterData,InitData,Dump,Restart,Hookean,Fix1]
     change_input(LammpsFile+"_init",lines_to_change,new_line_lammps)
 
 
@@ -95,7 +90,7 @@ def Update_Lammps(Sim_name,ResultsDir,LammpsFileDir,LammpsFile):
     RestartRead = 'read_restart  	'+ResultsDir+Sim_name+'/'+LammpsFileDir+'/restart1'
     Dump = 'dump pos 	all custom 1 '+ResultsDir+Sim_name+'/'+LammpsFileDir+'/pos_lammps_out.txt id type x y z vx vy vz'
     Restart = 'restart		1 '+ResultsDir+Sim_name+'/'+LammpsFileDir+'/restart1 '+ResultsDir+Sim_name+'/'+LammpsFileDir+'/restart2'
-    Fix1 = 'fix		1 all viscous/field 100.0 '+ResultsDir+Sim_name+'/VelForLammpsX.txt '+ResultsDir+Sim_name+'/VelForLammpsY.txt '+ResultsDir+Sim_name+'/Viscosity.txt'
+    Fix1 = 'fix		1 all viscous/field 1.0 '+ResultsDir+Sim_name+'/VelForLammpsX.txt '+ResultsDir+Sim_name+'/VelForLammpsY.txt '+ResultsDir+Sim_name+'/Viscosity.txt'
     Hookean = 'pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0  10.0 10.0 0.78 0.99 50.0 '+ResultsDir+Sim_name+'/SaturationInterpolated.txt'
     lines_to_change = [1,34,35,40,44]
     new_line_lammps2 = [RestartRead,Dump,Restart,Hookean,Fix1]

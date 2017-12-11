@@ -1,4 +1,4 @@
-read_restart  	/home/crhea/Documents/Results/SweepSimulations/Viscosity_100.0/LAMMPSFILES/restart1
+read_restart  	/home/crhea/Documents/Results/SweepSimulations/Viscosity_500.0/LAMMPSFILES/restart1
 
 variable	coeffRes equal 0.1
 variable	coeffFric equal 0.5
@@ -31,17 +31,17 @@ change_box 	all x final -0.6 0.6 boundary f f p
 #group		bottom id 9901:10000
 region		diskinner sphere 0.0 0.0 0 0.05 side out
 #now to print out info
-dump pos 	all custom 1 /home/crhea/Documents/Results/SweepSimulations/Viscosity_100.0/LAMMPSFILES/pos_lammps_out.txt id type x y z vx vy vz
-restart		1 /home/crhea/Documents/Results/SweepSimulations/Viscosity_100.0/LAMMPSFILES/restart1 /home/crhea/Documents/Results/SweepSimulations/Viscosity_100.0/LAMMPSFILES/restart2
+dump pos 	all custom 1 /home/crhea/Documents/Results/SweepSimulations/Viscosity_500.0/LAMMPSFILES/pos_lammps_out.txt id type x y z vx vy vz
+restart		1 /home/crhea/Documents/Results/SweepSimulations/Viscosity_500.0/LAMMPSFILES/restart1 /home/crhea/Documents/Results/SweepSimulations/Viscosity_500.0/LAMMPSFILES/restart2
 
 
 timestep	0.0001
 
-pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0  10.0 10.0 0.78 0.99 50.0 /home/crhea/Documents/Results/SweepSimulations/Viscosity_100.0/SaturationInterpolated.txt
+pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0  10.0 10.0 0.78 0.99 50.0 /home/crhea/Documents/Results/SweepSimulations/Viscosity_500.0/SaturationInterpolated.txt
 pair_coeff	* *
 
 fix 		innerannulus all wall/gran/region hooke/history 1000.0 200.0 200.0 100.0 0.5 1 region diskinner
-fix		1 all viscous/field 100.0 /home/crhea/Documents/Results/SweepSimulations/Viscosity_100.0/VelForLammpsX.txt /home/crhea/Documents/Results/SweepSimulations/Viscosity_100.0/VelForLammpsY.txt /home/crhea/Documents/Results/SweepSimulations/Viscosity_100.0/Viscosity.txt
+fix		1 all viscous/field 1.0 /home/crhea/Documents/Results/SweepSimulations/Viscosity_500.0/VelForLammpsX.txt /home/crhea/Documents/Results/SweepSimulations/Viscosity_500.0/VelForLammpsY.txt /home/crhea/Documents/Results/SweepSimulations/Viscosity_500.0/Viscosity.txt
 fix             xwalls all wall/reflect xlo EDGE xhi EDGE
 fix             ywalls all wall/reflect ylo EDGE yhi EDGE
 #fix 		topfix stationary freeze

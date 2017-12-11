@@ -1,6 +1,6 @@
 [Mesh]
   type = FileMesh
-file = /home/crhea/Documents/DukeThesis/Mesh/Central_Square.e
+file = /home/crhea/Documents/DukeThesis/Mesh/Disk.e
 []
 
 
@@ -63,7 +63,7 @@ file = /home/crhea/Documents/DukeThesis/Mesh/Central_Square.e
   saturation = sat
   water_density = DensityWater
   water_relperm = RelPermWater
-water_viscosity = 100.0
+water_viscosity = 10.0
   gas_density = DensityGas
   gas_relperm = RelPermGas
   gas_viscosity = 0.5
@@ -97,7 +97,7 @@ water_viscosity = 100.0
   variable = sat
   epsilon = 0.01
   shapes = 'circle'
-  centers_tips = '0.0 0.0 0.1'
+  centers_tips = '0.0 0.0 0.05'
   press_init_val = 0.99
 [../]
 []
@@ -107,22 +107,22 @@ water_viscosity = 100.0
 [./sat_init]
   type = readinic
   variable = sat
-dataFile = /home/crhea/Documents/Results/SweepSimulations/Viscosity_100.0/MOOSEValues_sat_updated.txt
+dataFile = /media/crhea/Data/Results/Thesis/SweepSimulations/Viscosity_10.0/MOOSEValues_sat_updated.txt
 [../]
 [./pp_init]
   type = readinic
   variable = pp
-dataFile = /home/crhea/Documents/Results/SweepSimulations/Viscosity_100.0/MOOSEValues_press_updated.txt
+dataFile = /media/crhea/Data/Results/Thesis/SweepSimulations/Viscosity_10.0/MOOSEValues_press_updated.txt
 [../]
 [./porosity_init]
   type = readinic
   variable = porosity
-dataFile = /home/crhea/Documents/Results/SweepSimulations/Viscosity_100.0/Porosity.txt
+dataFile = /media/crhea/Data/Results/Thesis/SweepSimulations/Viscosity_10.0/Porosity.txt
 [../]
 [./porosity_init_old]
   type = readinic
   variable = porosity_old
-dataFile = /home/crhea/Documents/Results/SweepSimulations/Viscosity_100.0/Porosity_old.txt
+dataFile = /media/crhea/Data/Results/Thesis/SweepSimulations/Viscosity_10.0/Porosity_old.txt
 [../]
 []
 
@@ -143,22 +143,22 @@ dataFile = /home/crhea/Documents/Results/SweepSimulations/Viscosity_100.0/Porosi
   [./veltyx]
     type = ElementalVelocity
     variable = velocity_x
-    output =/home/crhea/Documents/Results/SweepSimulations/Viscosity_100.0/velocitiesX
+    output =/media/crhea/Data/Results/Thesis/SweepSimulations/Viscosity_10.0/velocitiesX
   [../]
   [./veltyy]
     type = ElementalVelocity
     variable = velocity_y
-    output = /home/crhea/Documents/Results/SweepSimulations/Viscosity_100.0/velocitiesY
+    output = /media/crhea/Data/Results/Thesis/SweepSimulations/Viscosity_10.0/velocitiesY
   [../]
   [./sat_updated_out]
     type = NodalPrintOut
     variable = sat
-     output = /home/crhea/Documents/Results/SweepSimulations/Viscosity_100.0/MOOSEValues_sat_updated
+     output = /media/crhea/Data/Results/Thesis/SweepSimulations/Viscosity_10.0/MOOSEValues_sat_updated
   [../]
   [./press_updated_out]
     type = NodalPrintOut
     variable = pp
-     output = /home/crhea/Documents/Results/SweepSimulations/Viscosity_100.0/MOOSEValues_press_updated
+     output = /media/crhea/Data/Results/Thesis/SweepSimulations/Viscosity_10.0/MOOSEValues_press_updated
   [../]
 []
 
@@ -181,7 +181,7 @@ dataFile = /home/crhea/Documents/Results/SweepSimulations/Viscosity_100.0/Porosi
 []
 
 [Outputs]
-file_base = /home/crhea/Documents/Results/SweepSimulations/Viscosity_100.0/MOOSEFILES/MOOSEOutput
+file_base = /media/crhea/Data/Results/Thesis/SweepSimulations/Viscosity_10.0/MOOSEFILES/MOOSEOutput
 exodus = true
   [./CSV]
     type = CSV

@@ -27,12 +27,9 @@ boundary 	f f p
 
 
 
-read_data       /home/crhea/Documents/DukeThesis/ParticleFiles/lammps_square_100x100_T.lj
-region		box block -0.60 0.60 -0.60 0.60 -3 3 units box
-#region		diskinner sphere 0.0 0.0 0 0.1 side out
-#group 		top id 1:100
-#group		bottom id 7901:8000
-#group		stationary union bottom top
+read_data       /home/crhea/Documents/DukeThesis/ParticleFiles/lammps_circle_100x100_T.lj
+region		diskinner sphere 0.0 0.0 0 0.05 side out
+region		diskouter sphere 0.0 0.0 0 0.5 side in
 
 
 atom_modify	sort 0 0
@@ -46,21 +43,20 @@ comm_modify	vel yes
 
 
 #now to print out info
-dump pos 	all custom 1 /media/crhea/Data/HydroEquil/pos_lammps_out*.txt id type x y z vx vy vz
+dump pos 	all custom 1000 /media/crhea/Data/HydroEquil/pos_lammps_out*.txt id type x y z vx vy vz
 
 #Apply capillary/viscous and contact
-pair_style 	hooke/cap/init ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0 10.0 10.0 0.78 0.99 50.0 /media/crhea/Data/Results/Thesis/SweepSimulations/Viscosity_1.0/SaturationInterpoated.txt
+pair_style 	hooke/cap/init ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0 10.0 10.0 0.78 0.00001 10.0 /media/crhea/Data/Results/Thesis/SweepSimulations/Viscosity_1.0/SaturationInterpoated.txt 
 pair_coeff	* *
 
 
-timestep	0.000001
+timestep	0.0001
 
-#fix 		innerannulus all wall/gran/region hooke/history 1000.0 200.0 200.0 100.0 0.5 1 region diskinner
-fix             xwalls all wall/reflect xlo EDGE xhi EDGE
-fix             ywalls all wall/reflect ylo EDGE yhi EDGE
+fix 		innerannulus all wall/gran/region hooke/history 10000.0 2000.0 2000.0 1000.0 0.5 1 region diskinner
+fix		outerannulus all wall/gran/region hooke/history 10000.0 2000.0 2000.0 1000.0 0.5 1 region diskouter
 
-#fix 		topfix stationary freeze
+
 fix		2 all nve/sphere
 
-thermo		1
-run		2
+thermo		100
+run		20000

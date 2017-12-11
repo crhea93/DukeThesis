@@ -90,7 +90,7 @@ def runSim(Sim_name,ResultsDir,MooseFileDir,LammpsFileDir,Porosity_Filecpp,Poros
             print("----------LAMMPS RUN "+str(timestep)+ " Ending----------")
 
         #Update csv files for particle positions
-        write_to_txt("/home/crhea/Dropbox/Thesis/PrimaryFiles/"+Sim_name+"/"+LammpsFileDir+"/pos_lammps_out.txt",number_particles,LammpsFileDir+"/Pos/pos_",timestep)
+        write_to_txt(ResultsDir+Sim_name+"/"+LammpsFileDir+"/pos_lammps_out.txt",number_particles,LammpsFileDir+"/Pos/pos_",timestep)
         # ---------------------- POROSITY UPDATE ----------------------#
         if Poros == True: #Only run porosity update if desired
             Update_Porosity(Sim_name,ResultsDir,LammpsFileDir,Porosity_Filecpp,Mesh,Num_parts,Diameter/2.0,num_nodes,num_elem,Ann_rad,Dom_rad,NN)
@@ -117,8 +117,11 @@ def runSim(Sim_name,ResultsDir,MooseFileDir,LammpsFileDir,Porosity_Filecpp,Poros
 
 
 def main():
-    Setup(Name_of_Sim,ResultsDir,MOOSEFILEDIR,LAMMPSFILEDIR,ParticlesInput,PorosityFilecpp,mesh,mui)
-    runSim(Name_of_Sim,ResultsDir,MOOSEFILEDIR,LAMMPSFILEDIR,PorosityFilecpp,PorosityFileforMOOSE,mesh,MooseFile,LammpsFile,ParticlesInput,initial_press,number_times,number_particles,particle_diameter,Porosity_Boolean,mui,mud,Domain,annulus_radius,domain_radius,NN_number)
+    viscosities = [1.0]
+    for i in range(len(viscosities)):
+        Name_of_Simu = Name_of_Sim+"_"+str(viscosities[i])
+        Setup(Name_of_Simu,ResultsDir,MOOSEFILEDIR,LAMMPSFILEDIR,ParticlesInput,PorosityFilecpp,mesh,viscosities[i])
+        runSim(Name_of_Simu,ResultsDir,MOOSEFILEDIR,LAMMPSFILEDIR,PorosityFilecpp,PorosityFileforMOOSE,mesh,MooseFile,LammpsFile,ParticlesInput,initial_press,number_times,number_particles,particle_diameter,Porosity_Boolean,viscosities[i],mud,Domain,annulus_radius,domain_radius,NN_number)
 
 
 

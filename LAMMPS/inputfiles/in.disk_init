@@ -1,5 +1,5 @@
 #LJ molecules in a 2D box
-variable        Diam equal 0.016
+variable        Diam equal 0.01
 variable	coeffRes equal 0.1
 variable	coeffFric equal 0.5
 
@@ -26,33 +26,29 @@ atom_style	sphere
 boundary 	f f p
 
 
-read_data       PrimaryFiles/Disk/lammps_disk_9000.lj
-region		disk sphere 0.0 0.0 0 1.0 side in
+read_data       hydrostatic_equil_circle.lj
+region 		diskinner sphere 0.0 0.0 0.0 0.05 side out
+region 		diskouter sphere 0.0 0.0 0.0 0.5 side in
+
+
 
 atom_modify	sort 0 0 
-#neigh_modify delay 0 every 10  one 2500
-
-
 set 		group all density 0.01
 set 		group all diameter ${Diam}
 
 comm_modify	vel yes
-
-
 #now to print out info
-dump pos 	all custom 100000 /home/crhea/Dropbox/Thesis/PrimaryFiles/Disk/LAMMPSFILES/pos_lammps_out.txt id type x y z vx vy vz
-
-#Apply capillary/viscous and contact
-pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0 0.001 0.002 1.0 1.0 1.0 0.1
+dump pos 	all custom 1 /media/crhea/Data/Results/Thesis/SweepSimulations/Viscosity_10.0/LAMMPSFILES/pos_lammps_out.txt id type x y z vx vy vz
+restart		1 /media/crhea/Data/Results/Thesis/SweepSimulations/Viscosity_10.0/LAMMPSFILES/restart1 /media/crhea/Data/Results/Thesis/SweepSimulations/Viscosity_10.0/LAMMPSFILES/restart2
+pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0  10.0 10.0 0.78 0.99 50.0 /media/crhea/Data/Results/Thesis/SweepSimulations/Viscosity_10.0/SaturationInterpolated.txt
 pair_coeff	* *
 
-restart		100000 PrimaryFiles/Disk/LAMMPSFILES/restart1 PrimaryFiles/Disk/LAMMPSFILES/restart2
-timestep	0.00000001
+fix		1 all viscous/field 1.0 /media/crhea/Data/Results/Thesis/SweepSimulations/Viscosity_10.0/VelForLammpsX.txt /media/crhea/Data/Results/Thesis/SweepSimulations/Viscosity_10.0/VelForLammpsY.txt /media/crhea/Data/Results/Thesis/SweepSimulations/Viscosity_10.0/Viscosity.txt
+fix             innerannulus all wall/gran/region hooke/history 10000.0 2000.0 2000.0 1000.0 0.5 1 region diskinner
+fix             outerannulus all wall/gran/region hooke/history 10000.0 2000.0 2000.0 1000.0 0.5 1 region diskouter
 
 
-fix		1 all viscous/field 0.5 /home/crhea/Dropbox/Thesis/PrimaryFiles/Disk/VelForLammpsX.txt /home/crhea/Dropbox/Thesis/PrimaryFiles/Disk/VelForLammpsY.txt /home/crhea/Dropbox/Thesis/PrimaryFiles/Disk/Viscosity.txt
-fix 		wall all wall/gran/region hooke/history 1000.0 200.0 200.0 100.0 0.5 1 region disk
 fix		2 all nve/sphere
 
-thermo		100
+timestep 	0.0001
 run		100

@@ -21,7 +21,7 @@ def visc_avg(SaturationFile,ParticleField,mu1,mu2,num_part,output):
         lineSplit = line.split(" ")
         sat_data[linecount,0] = lineSplit[0]
         sat_data[linecount,1] = lineSplit[1]
-        sat_data[linecount,1] = lineSplit[2]
+        sat_data[linecount,2] = lineSplit[2]
         linecount += 1
     # Now read in LAMMPS DATA
     linenumber = 0
@@ -36,11 +36,13 @@ def visc_avg(SaturationFile,ParticleField,mu1,mu2,num_part,output):
         else:
              pass
         linenumber += 1
-
-
+    #print(sat_data)
+    #print(x_lammps)
+    #print(y_lammps)
+    #print("Internal Interp Starting")
     # CALCULATE Saturation at the particle points through interpolation
     Sat_interp = griddata((sat_data[:,0] , sat_data[:,1]), sat_data[:,2], (x_lammps, y_lammps), method="cubic", fill_value=0.0)
-
+    #print("Internal Interp Done")
     # CALCULATE viscosity using a weighted average
     for i in range(num_part):
         viscosity[i] = Sat_interp[i]*mu1+(1-Sat_interp[i])*mu2
@@ -50,4 +52,4 @@ def visc_avg(SaturationFile,ParticleField,mu1,mu2,num_part,output):
     for i in range(len(viscosity)):
         out.write(str(x_lammps[i].item(0))+" "+str(y_lammps[i].item(0))+" "+str(viscosity[i].item(0))+'\n')
     out.close()
-    out.close()
+    

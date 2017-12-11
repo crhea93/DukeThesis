@@ -8,7 +8,7 @@ Initial Pressure Value
 Mui = viscosity of invading Fluid
 Mud = viscosity of defending Fluid
 '''
-from Input.Mode1Quasi import *
+from Input.Sweep import *
 
 
 # BASIC IMPORTS
@@ -71,7 +71,9 @@ def runSim(Sim_name,ResultsDir,MooseFileDir,LammpsFileDir,Porosity_Filecpp,Poros
         # Update Velocity and Viscosity Fields in LAMMPS
         print("----------Beginning Interpolating----------")
         Interpolate(ParticlesFile,Num_parts,"velocitiesX.csv","velocitiesY.csv",MooseFileDir+"/MOOSEOutput.e","VelForLammps")
+        print("----------Begin Interpolation of Viscosity Field----------")
         visc_avg("MOOSEValues_sat_updated.txt",ParticlesFile,Mui,Mud,Num_parts,"Viscosity")
+        print("----------Begin Interpolation of Saturation Field----------")
         sat_int("MOOSEValues_sat_updated.txt",ParticlesFile,Num_parts,"SaturationInterpolated")
         print("----------Ending Interpolating----------")
 
@@ -90,7 +92,7 @@ def runSim(Sim_name,ResultsDir,MooseFileDir,LammpsFileDir,Porosity_Filecpp,Poros
             print("----------LAMMPS RUN "+str(timestep)+ " Ending----------")
 
         #Update csv files for particle positions
-        write_to_txt("/home/crhea/Dropbox/Thesis/PrimaryFiles/"+Sim_name+"/"+LammpsFileDir+"/pos_lammps_out.txt",number_particles,LammpsFileDir+"/Pos/pos_",timestep)
+        write_to_txt(ResultsDir+Sim_name+"/"+LammpsFileDir+"/pos_lammps_out.txt",number_particles,LammpsFileDir+"/Pos/pos_",timestep)
         # ---------------------- POROSITY UPDATE ----------------------#
         if Poros == True: #Only run porosity update if desired
             Update_Porosity(Sim_name,ResultsDir,LammpsFileDir,Porosity_Filecpp,Mesh,Num_parts,Diameter/2.0,num_nodes,num_elem,Ann_rad,Dom_rad,NN)
@@ -117,7 +119,7 @@ def runSim(Sim_name,ResultsDir,MooseFileDir,LammpsFileDir,Porosity_Filecpp,Poros
 
 
 def main():
-    viscosities = [1.0]
+    viscosities = [10.0,100.0,250.0,500.0]
     for i in range(len(viscosities)):
         Name_of_Simu = Name_of_Sim+"_"+str(viscosities[i])
         Setup(Name_of_Simu,ResultsDir,MOOSEFILEDIR,LAMMPSFILEDIR,ParticlesInput,PorosityFilecpp,mesh,viscosities[i])

@@ -107,7 +107,9 @@ def Interpolate(Pfield,num_particles,Velx,Vely,exodus_file,output):
     #print(particles_x)
     #print(particles_y)
     #Interpolate
+    print("---------Begin Interpolation of X field----------")
     Interpx = griddata((center_velx[:, 0], center_velx[:, 1]), center_velx[:, 2], (particles_x, particles_y), method="cubic", fill_value=0.0)
+    print("---------Begin Interpolation of Y field----------")
     Interpy = griddata((center_vely[:, 0], center_vely[:, 1]), center_vely[:, 2], (particles_x, particles_y), method="cubic", fill_value=0.0)
     #print(Interpx)
     #Print to new file
