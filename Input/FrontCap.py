@@ -10,7 +10,7 @@ mesh = '/home/crhea/Documents/DukeThesis/Mesh/square_Ref1'
 MooseFile = '/home/crhea/Documents/DukeThesis/bat/input/Front.i'
 LammpsFile = '/home/crhea/Documents/DukeThesis/LAMMPS/inputfiles/in.front_cap'
 ParticlesInput = 'lammps_tube_100.lj'
-PorosityFilecpp = 'porosity'
+PorosityFilecpp = 'porosity_constant'
 PorosityFileforMOOSE = 'Porosity'
 Name_of_Sim = 'FrontCap'
 # VALUES FOR INPUT
