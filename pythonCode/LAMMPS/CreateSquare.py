@@ -53,4 +53,4 @@ def square_lattice(x_min,x_max,y_min,y_max,x_parts,y_parts,num_particles,output)
     for i in range(num_particles):
         f.write(str(i+1)+" 1 1 1 "+str(particles[i].xp)+" "+str(particles[i].yp)+ " 0 0 0 0"+'\n')
 
-square_lattice(-4.95,4.95,-0.495,0.495,100,40,4000,'/home/crhea/Documents/DukeThesis/lammps_tube_4000.lj')
+square_lattice(-0.45,0.45,-0.45,0.45,10,10,100,'/home/crhea/Documents/DukeThesis/Mesh/lammps_tube_100.lj')
