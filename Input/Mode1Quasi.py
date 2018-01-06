@@ -4,7 +4,7 @@ Input File for Tube with Capillary and Viscous Forces as well as porosity
 Name_of_Sim = 'Mode1'
 MOOSEFILEDIR = 'MOOSEFILES'
 LAMMPSFILEDIR = 'LAMMPSFILES'
-ResultsDir = '/home/crhea/Documents/Results/'
+ResultsDir = '/media/crhea/Data/Mode1/'
 # FILES FOR INPUT
 #PorosityFileInit = 'constant_Ref1'
 mesh = '/home/crhea/Documents/DukeThesis/Mesh/square_Ref1'
@@ -16,7 +16,7 @@ PorosityFileforMOOSE = 'Porosity'
 # VALUES FOR INPUT
 initial_press = 0.0+10**(-5)
 number_particles = 8000
-number_times = 10000
+number_times = 100
 particle_diameter = 0.01
 Porosity_Boolean = True
 mui = 0.8 #Viscosity of invading Fluid

@@ -1,6 +1,6 @@
 [Mesh]
   type = FileMesh
-file = Mesh/Tube_Ref1.e
+file = /home/crhea/Documents/DukeThesis/Mesh/Tube_Ref1.e
 []
 
 
@@ -34,10 +34,10 @@ file = Mesh/Tube_Ref1.e
   [./sat]
   [../]
 []
-
-
 [AuxVariables]
 [./porosity]
+[../]
+[./porosity_old]
 [../]
   [./velocity_x]
     order = CONSTANT
@@ -50,60 +50,17 @@ file = Mesh/Tube_Ref1.e
 
 []
 [BCs]
-#  [./left_water]
-#    type = Q2PPiecewiseLinearSink
-#    boundary = 1
-#    pressures = '0 1'
-#    bare_fluxes = '0 1.'
-#    multiplying_fcn = 0.1
-#    variable = sat
-#    other_var = pp
-#    var_is_porepressure = false
-#    use_mobility = false
-#    use_relperm = false
-#    fluid_density = DensityWater
-#    fluid_viscosity = 0.8
-#    fluid_relperm = RelPermWater
-#  [../]
-#  [./right_water]
-#    type = Q2PPiecewiseLinearSink
-#    boundary = 3
-#    pressures = '0 1'
-#    bare_fluxes = '1 1'
-#    variable = sat
-#    other_var = pp
-#    var_is_porepressure = false
-#    use_mobility = true
-#    use_relperm = true
-#    fluid_density = DensityWater
-#    fluid_viscosity = 0.8
-#    fluid_relperm = RelPermWater
-#  [../]
-#  [./right_gas]
-#    type = Q2PPiecewiseLinearSink
-#    boundary = 3
-#    pressures = '0 1'
-#    bare_fluxes = '1 1'
-#    variable = pp
-#    other_var = sat
-#    var_is_porepressure = true
-#    use_mobility = true
-#    use_relperm = true
-#    fluid_density = DensityGas
-#    fluid_viscosity = 0.5
-#    fluid_relperm = RelPermGas
-#  [../]
 [./press_right]
 type = DirichletBC
 boundary = 1
 variable = pp
-value = 10000.0
+value = 1.0
 [../]
 [./sat_left]
 type = DirichletBC
 boundary = 1
 variable = sat
-value = 0.01
+value = 1.0
 [../]
 []
 
@@ -113,7 +70,7 @@ value = 0.01
   saturation = sat
   water_density = DensityWater
   water_relperm = RelPermWater
-  water_viscosity = 0.8
+water_viscosity = 1.0
   gas_density = DensityGas
   gas_relperm = RelPermGas
   gas_viscosity = 0.5
@@ -145,50 +102,40 @@ value = 0.01
 []
 
 
-#[Kernels]
-#Keep pressure in central region constant
-#[./central_drop]
-#  type = ConstantCoupled
-#  variable = pp
-#  epsilon = 0.1
-#  shapes = 'circle'
-#  centers_tips = '0.0 0.0 0.5'
-#  press_init_val = 5.0
-#[../]
-
-#[]
-
-
-
 
 [ICs]
 [./saT_init]
   type = readinic
   variable = sat
-dataFile = PrimaryFiles/Tube/MOOSEValues_sat_init.txt
+dataFile = /media/crhea/Data/Results/Tube/Tube_1.0/MOOSEValues_sat_updated.txt
 [../]
 [./press_init]
   type = readinic
   variable = pp
-dataFile = PrimaryFiles/Tube/MOOSEValues_press_init.txt
+dataFile = /media/crhea/Data/Results/Tube/Tube_1.0/MOOSEValues_press_updated.txt
 [../]
 [./porosity_init]
   type = readinic
   variable = porosity
-dataFile = PrimaryFiles/Tube/Porosity.txt
+dataFile = /media/crhea/Data/Results/Tube/Tube_1.0/Porosity.txt
+[../]
+[./porosity_init_old]
+  type = readinic
+  variable = porosity_old
+dataFile = /media/crhea/Data/Results/Tube/Tube_1.0/Porosity_old.txt
 [../]
 []
-  
 [Materials]
   [./rock]
     type = Q2PMaterialC
     block = 1
     por_var = porosity
-    mat_permeability = '1E-2 0 0  0 1E-2 0  0 0 1E-2'
+   por_var_old = porosity_old
+  mat_permeability = '1E-2 0 0  0 1E-2 0  0 0 1E-2'
     gravity = '0 0 0'
   [../]
 []
-
+  
 [Postprocessors]
   [./dofs]
     type = NumDOFs
@@ -196,22 +143,22 @@ dataFile = PrimaryFiles/Tube/Porosity.txt
   [./veltyx]
     type = ElementalVelocity
     variable = velocity_x
-    output = PrimaryFiles/Tube/velocitiesX
+    output =/media/crhea/Data/Results/Tube/Tube_1.0/velocitiesX
   [../]
   [./veltyy]
     type = ElementalVelocity
     variable = velocity_y
-    output = PrimaryFiles/Tube/velocitiesY
+    output = /media/crhea/Data/Results/Tube/Tube_1.0/velocitiesY
   [../]
   [./sat_updated_out]
     type = NodalPrintOut
     variable = sat
-     output = PrimaryFiles/Tube/MOOSEValues_sat_updated
+     output = /media/crhea/Data/Results/Tube/Tube_1.0/MOOSEValues_sat_updated
   [../]
   [./press_updated_out]
     type = NodalPrintOut
     variable = pp
-     output = PrimaryFiles/Tube/MOOSEValues_press_updated
+     output = /media/crhea/Data/Results/Tube/Tube_1.0/MOOSEValues_press_updated
   [../]
 []
 
@@ -229,13 +176,12 @@ dataFile = PrimaryFiles/Tube/Porosity.txt
 [Executioner]
   type = Transient
   solve_type = Newton
-  dt = 0.1
-  end_time = 0.1
+  dt = 1.0
+  end_time = 1.0
 []
 
 [Outputs]
-file_base = PrimaryFiles/Tube/MOOSEFILES/MOOSEOutput
-
+file_base = /media/crhea/Data/Results/Tube/Tube_1.0/MOOSEFILES/MOOSEOutput
   exodus = true
   [./CSV]
     type = CSV

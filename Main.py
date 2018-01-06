@@ -8,7 +8,7 @@ Initial Pressure Value
 Mui = viscosity of invading Fluid
 Mud = viscosity of defending Fluid
 '''
-from Input.Mode1Quasi import *
+from Input.Tube_renew import *
 
 
 # BASIC IMPORTS

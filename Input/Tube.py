@@ -2,16 +2,19 @@
 Input File for Tube with Capillary and Viscous Forces as well as porosity
 '''
 Name_of_Sim = 'Tube'
+MOOSEFILEDIR = 'MOOSEFILES'
+LAMMPSFILEDIR = 'LAMMPSFILES'
+ResultsDir = '/media/crhea/Data/Results/Tube/'
 # FILES FOR INPUT
 #PorosityFileInit = 'constant_Ref1'
-mesh = 'Tube_Ref1'
-MooseFile = 'bat/input/Front.i'
-LammpsFile = 'LAMMPS/inputfiles/in.front_cap'
-ParticlesInput = 'PrimaryFiles/'+Name_of_Sim+'/lammps_tube_4000.lj'
+mesh = '/home/crhea/Documents/DukeThesis/Mesh/Tube_Ref1'
+MooseFile = '/home/crhea/Documents/DukeThesis/bat/input/Front.i'
+LammpsFile = '/home/crhea/Documents/DukeThesis/LAMMPS/inputfiles/in.front_cap'
+ParticlesInput = 'lammps_tube_4000.lj'
 PorosityFilecpp = 'porosity'
 PorosityFileforMOOSE = 'Porosity'
-# VALUES FOR INPUT
 initial_press = 0.0+10**(-5)
+# VALUES FOR INPUT
 number_particles = 4000
 number_times = 1500
 particle_diameter = 0.05

@@ -27,7 +27,7 @@ boundary 	f f p
 
 
 
-read_data       /home/crhea/Documents/DukeThesis/ParticleFiles/lammps_circle_100x100_T.lj
+read_data       /home/crhea/Documents/DukeThesis/ParticleFiles/lammps_full_disk.lj
 region		diskinner sphere 0.0 0.0 0 0.05 side out
 region		diskouter sphere 0.0 0.0 0 0.5 side in
 

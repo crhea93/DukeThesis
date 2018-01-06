@@ -76,7 +76,7 @@ file = /home/crhea/Documents/DukeThesis/Mesh/square_Ref1.e
   saturation = sat
   water_density = DensityWater
   water_relperm = RelPermWater
-water_viscosity = 0.8
+water_viscosity = 1.0
   gas_density = DensityGas
   gas_relperm = RelPermGas
   gas_viscosity = 0.5
@@ -107,22 +107,22 @@ water_viscosity = 0.8
 [./saT_init]
   type = readinic
   variable = sat
-dataFile = /home/crhea/Documents/Results/Mode1/MOOSEValues_sat_updated.txt
+dataFile = /media/crhea/Data/Mode1/Mode1_1.0/MOOSEValues_sat_updated.txt
 [../]
 [./press_init]
   type = readinic
   variable = pp
-dataFile = /home/crhea/Documents/Results/Mode1/MOOSEValues_press_updated.txt
+dataFile = /media/crhea/Data/Mode1/Mode1_1.0/MOOSEValues_press_updated.txt
 [../]
 [./porosity_init]
   type = readinic
   variable = porosity
-dataFile = /home/crhea/Documents/Results/Mode1/Porosity.txt
+dataFile = /media/crhea/Data/Mode1/Mode1_1.0/Porosity.txt
 [../]
 [./porosity_init_old]
   type = readinic
   variable = porosity_old
-dataFile = /home/crhea/Documents/Results/Mode1/Porosity_old.txt
+dataFile = /media/crhea/Data/Mode1/Mode1_1.0/Porosity_old.txt
 [../]
 []
 
@@ -132,7 +132,7 @@ dataFile = /home/crhea/Documents/Results/Mode1/Porosity_old.txt
     block = 1
     por_var = porosity
     por_var_old = porosity_old
-    mat_permeability = '1E-2 0 0  0 1E-2 0  0 0 1E-2'
+    mat_permeability = '1E-2 0 0  0 1E-4 0  0 0 1E-2'
     gravity = '0 0 0'
   [../]
 []
@@ -143,22 +143,22 @@ dataFile = /home/crhea/Documents/Results/Mode1/Porosity_old.txt
   [./veltyx]
     type = ElementalVelocity
     variable = velocity_x
-    output =/home/crhea/Documents/Results/Mode1/velocitiesX
+    output =/media/crhea/Data/Mode1/Mode1_1.0/velocitiesX
   [../]
   [./veltyy]
     type = ElementalVelocity
     variable = velocity_y
-    output = /home/crhea/Documents/Results/Mode1/velocitiesY
+    output = /media/crhea/Data/Mode1/Mode1_1.0/velocitiesY
   [../]
   [./sat_updated_out]
     type = NodalPrintOut
     variable = sat
-     output = /home/crhea/Documents/Results/Mode1/MOOSEValues_sat_updated
+     output = /media/crhea/Data/Mode1/Mode1_1.0/MOOSEValues_sat_updated
   [../]
   [./press_updated_out]
     type = NodalPrintOut
     variable = pp
-     output = /home/crhea/Documents/Results/Mode1/MOOSEValues_press_updated
+     output = /media/crhea/Data/Mode1/Mode1_1.0/MOOSEValues_press_updated
   [../]
 []
 
@@ -181,7 +181,7 @@ dataFile = /home/crhea/Documents/Results/Mode1/Porosity_old.txt
 
 
 [Outputs]
-file_base = /home/crhea/Documents/Results/Mode1/MOOSEFILES/MOOSEOutput
+file_base = /media/crhea/Data/Mode1/Mode1_1.0/MOOSEFILES/MOOSEOutput
   exodus = true
   [./CSV]
     type = CSV

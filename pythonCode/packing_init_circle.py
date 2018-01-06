@@ -46,6 +46,6 @@ def main():
     os.chdir('/home/crhea/Documents/DukeThesis/')
     lmp.file('/home/crhea/Documents/DukeThesis/LAMMPS/inputfiles/in.Initialize_Packing_Circle')
     for i in range(100):
-        reformat('/media/crhea/Data/HydroEquil/pos_lammps_out'+str(1000*i)+'.txt','/media/crhea/Data/HydroEquil/test'+str(i),7764)
+        reformat('/media/crhea/Data/HydroEquil/pos_lammps_out'+str(1000*i)+'.txt','/media/crhea/Data/HydroEquil/test'+str(i),7860)
 
 main()

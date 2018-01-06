@@ -10,14 +10,14 @@ class particle:
         self.xv = 0 # x velocity
         self.yp = 0 # y coordinate
         self.yv = 0 # y velocity
-        self.rad = 0.01# particle radius
+        self.rad = 0.05# particle radius
         self.m = 0 # mass
     def assign(self,xpos,xvel,ypos,yvel):
         self.xp = xpos
         self.xv = xvel
         self.yp = ypos
         self.yv = yvel
-        self.rad = 0.01
+        self.rad = 0.05
         self.m = 1
 
 
@@ -25,8 +25,8 @@ def square_lattice(x_min,x_max,y_min,y_max,x_parts,y_parts,num_particles,output)
     particles = []
     x = np.linspace(x_min,x_max,x_parts)
     y = np.linspace(y_min,y_max,y_parts)
-    for i in range(len(x)):
-        for j in range(len(y)):
+    for i in range(len(y)):
+        for j in range(len(x)):
             new_particle = particle()
             new_particle.assign(x[j],0,y[i],0)
             particles.append(new_particle)
@@ -53,4 +53,4 @@ def square_lattice(x_min,x_max,y_min,y_max,x_parts,y_parts,num_particles,output)
     for i in range(num_particles):
         f.write(str(i+1)+" 1 1 1 "+str(particles[i].xp)+" "+str(particles[i].yp)+ " 0 0 0 0"+'\n')
 
-square_lattice(-0.495,0.495,-0.495,0.495,100,100,10000-1,'/home/crhea/Dropbox/Thesis/lammps_square_10000.lj')
+square_lattice(-4.95,4.95,-0.495,0.495,100,40,4000,'/home/crhea/Documents/DukeThesis/lammps_tube_4000.lj')
