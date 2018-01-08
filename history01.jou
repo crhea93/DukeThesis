@@ -1,0 +1,6 @@
+#!python
+cubit.cmd('set node constraint on')
+cubit.cmd('import mesh geometry "/home/crhea/Documents/DukeThesis/Mesh/Disk.e" block all use nodeset sideset feature_angle 135.00 linear merge ')
+cubit.cmd('refine surface 1 numsplit 1 bias 1.0 depth 1 smooth')
+cubit.cmd('set large exodus file off')
+cubit.cmd('export mesh "/home/crhea/Documents/DukeThesis/Mesh/Disk_ref.e" dimension 2 overwrite')
