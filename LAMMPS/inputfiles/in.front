@@ -30,7 +30,7 @@ change_box 	all y final -0.5 0.5 boundary f f p
 #now to print out info
 dump pos 	all custom 100 /home/crhea/Dropbox/Thesis/PrimaryFiles/Front/LAMMPSFILES/pos_lammps_out.txt id type x y z vx vy vz
 restart		100 PrimaryFiles/Front/LAMMPSFILES/restart1 PrimaryFiles/Front/LAMMPSFILES/restart2
-timestep	0.000001
+timestep	0.0001
 
 fix		1 all viscous/field 0.5 /home/crhea/Dropbox/Thesis/PrimaryFiles/Front/VelForLammpsX.txt /home/crhea/Dropbox/Thesis/PrimaryFiles/Front/VelForLammpsY.txt /home/crhea/Dropbox/Thesis/PrimaryFiles/Front/Viscosity.txt
 fix xwalls all wall/reflect xlo EDGE xhi EDGE

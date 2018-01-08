@@ -27,7 +27,7 @@ boundary 	f f p
 
 
 read_data       lammps_tube_100.lj
-region		box block -5.0 5.0 -0.5 0.5 -3 3 units box
+region		box block -0.5 0.5 -0.5 0.5 -3 3 units box
 
 atom_modify	sort 0 0 
 #neigh_modify delay 0 every 10  one 2500
@@ -40,17 +40,17 @@ comm_modify	vel yes
 
 
 #now to print out info
-dump pos 	all custom 1 /media/crhea/Data/Results/FrontCap/FrontCap_1.0/LAMMPSFILES/pos_lammps_out.txt id type x y z vx vy vz
+dump pos 	all custom 1 /media/crhea/Data/Results/Front/Front_1.0/LAMMPSFILES/pos_lammps_out.txt id type x y z vx vy vz
 
 #Apply capillary/viscous and contact
-pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0  5.0 5.0 0.00000078 0.01 5.0 /media/crhea/Data/Results/FrontCap/FrontCap_1.0/SaturationInterpolated.txt
+pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0  0.0 0.0 0.0 0.0 0.0 /media/crhea/Data/Results/Front/Front_1.0/SaturationInterpolated.txt
 pair_coeff	* *
 
-restart		1 /media/crhea/Data/Results/FrontCap/FrontCap_1.0/LAMMPSFILES/restart1 /media/crhea/Data/Results/FrontCap/FrontCap_1.0/LAMMPSFILES/restart2
+restart		1 /media/crhea/Data/Results/Front/Front_1.0/LAMMPSFILES/restart1 /media/crhea/Data/Results/Front/Front_1.0/LAMMPSFILES/restart2
 timestep	0.0001
 
 
-fix		1 all viscous/field 100.0 /media/crhea/Data/Results/FrontCap/FrontCap_1.0/VelForLammpsX.txt /media/crhea/Data/Results/FrontCap/FrontCap_1.0/VelForLammpsY.txt /media/crhea/Data/Results/FrontCap/FrontCap_1.0/Viscosity.txt
+fix		1 all viscous/field 100.0 /media/crhea/Data/Results/Front/Front_1.0/VelForLammpsX.txt /media/crhea/Data/Results/Front/Front_1.0/VelForLammpsY.txt /media/crhea/Data/Results/Front/Front_1.0/Viscosity.txt
 fix xwalls all wall/reflect xlo EDGE xhi EDGE
 fix ywalls all wall/reflect ylo EDGE yhi EDGE
 fix		2 all nve/sphere

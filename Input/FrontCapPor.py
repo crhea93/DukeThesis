@@ -78,7 +78,7 @@ def Update_Lammps_Init(Sim_name,ResultsDir,LammpsFileDir,LammpsFile,ParticlesInp
     Dump = 'dump pos 	all custom 1 '+ResultsDir+Sim_name+'/'+LammpsFileDir+'/pos_lammps_out.txt id type x y z vx vy vz'
     Restart = 'restart		1 '+ResultsDir+Sim_name+'/'+LammpsFileDir+'/restart1 '+ResultsDir+Sim_name+'/'+LammpsFileDir+'/restart2'
     Fix1 = 'fix		1 all viscous/field 100.0 '+ResultsDir+Sim_name+'/VelForLammpsX.txt '+ResultsDir+Sim_name+'/VelForLammpsY.txt '+ResultsDir+Sim_name+'/Viscosity.txt'
-    Hookean = 'pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0  5.0 5.0 0.00000078 0.01 5.0 '+ResultsDir+Sim_name+'/SaturationInterpolated.txt'
+    Hookean = 'pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0  5.0 5.0 0.078 0.01 50.0 '+ResultsDir+Sim_name+'/SaturationInterpolated.txt'
     lines_to_change = [2,29,43,46,49,53]
     new_line_lammps = [DiameterData,InitData,Dump,Hookean,Restart,Fix1]
     change_input(LammpsFile+"_init",lines_to_change,new_line_lammps)
@@ -89,7 +89,7 @@ def Update_Lammps(Sim_name,ResultsDir,LammpsFileDir,LammpsFile):
     Dump = 'dump pos 	all custom 1 '+ResultsDir+Sim_name+'/'+LammpsFileDir+'/pos_lammps_out.txt id type x y z vx vy vz'
     Restart = 'restart		1 '+ResultsDir+Sim_name+'/'+LammpsFileDir+'/restart1 '+ResultsDir+Sim_name+'/'+LammpsFileDir+'/restart2'
     Fix1 = 'fix		1 all viscous/field 100.0 '+ResultsDir+Sim_name+'/VelForLammpsX.txt '+ResultsDir+Sim_name+'/VelForLammpsY.txt '+ResultsDir+Sim_name+'/Viscosity.txt'
-    Hookean = 'pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0  5.0 5.0 0.00000078 0.01 5.0 '+ResultsDir+Sim_name+'/SaturationInterpolated.txt'
+    Hookean = 'pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0  5.0 5.0 0.078 0.01 50.0 '+ResultsDir+Sim_name+'/SaturationInterpolated.txt'
     lines_to_change = [1,31,32,37,41]
     new_line_lammps2 = [RestartRead,Dump,Restart,Hookean,Fix1]
     change_input(LammpsFile,lines_to_change,new_line_lammps2)
