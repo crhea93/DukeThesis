@@ -8,7 +8,7 @@ Initial Pressure Value
 Mui = viscosity of invading Fluid
 Mud = viscosity of defending Fluid
 '''
-from Input.Sweep import *
+from Input.Sweep_ref import *
 
 
 # BASIC IMPORTS
@@ -119,7 +119,7 @@ def runSim(Sim_name,ResultsDir,MooseFileDir,LammpsFileDir,Porosity_Filecpp,Poros
 
 
 def main():
-    viscosities = [1000.0]
+    viscosities = [10.0,250.0]
     for i in range(len(viscosities)):
         Name_of_Simu = Name_of_Sim+"_"+str(viscosities[i])
         Setup(Name_of_Simu,ResultsDir,MOOSEFILEDIR,LAMMPSFILEDIR,ParticlesInput,PorosityFilecpp,mesh,viscosities[i])
