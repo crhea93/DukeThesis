@@ -34,8 +34,8 @@ from pythonCode.MOOSE.Readmesh import count_FEMesh
 def Setup(Sim_name,ResultsDir,MooseFileDir,LammpsFileDir,ParticlesFile,Porosity_Filecpp,Mesh,mui):
     if os.path.exists(ResultsDir+Sim_name)!= True:
         os.mkdir(ResultsDir+Sim_name)
-    copyfile("/home/crhea/Documents/DukeThesis/porosity_calc/"+Porosity_Filecpp+".cpp",ResultsDir+Sim_name+"/"+Porosity_Filecpp+".cpp")
-    copyfile("/home/crhea/Documents/DukeThesis/ParticleFiles/"+ParticlesFile,ResultsDir+Sim_name+"/"+ParticlesFile)
+    copyfile("/home/clr56/Documents/DukeThesis/porosity_calc/"+Porosity_Filecpp+".cpp",ResultsDir+Sim_name+"/"+Porosity_Filecpp+".cpp")
+    copyfile("/home/clr56/Documents/DukeThesis/ParticleFiles/"+ParticlesFile,ResultsDir+Sim_name+"/"+ParticlesFile)
     os.chdir(ResultsDir+Sim_name+"/")
     if os.path.exists(LammpsFileDir)!=True:
         os.mkdir(LammpsFileDir)
@@ -61,7 +61,7 @@ def runSim(Sim_name,ResultsDir,MooseFileDir,LammpsFileDir,Porosity_Filecpp,Poros
     copyfile("Porosity.txt","Porosity_old.txt")
     Init_FF(Sim_name,ResultsDir,MooseFileDir,MooseFile,Mesh,PorosityFileMOOSE,In_Press,Mui)
     # -------------- DONE WITH INITIALIZATION ----------------------#
-    call('mpiexec -n 1 /home/crhea/Documents/DukeThesis/bat/bat-opt -i '+ MooseFile,shell=True)
+    call('mpiexec -n 1 /home/clr56/Documents/DukeThesis/bat/bat-opt -i '+ MooseFile,shell=True)
     Moose_append_init(MooseFileDir+"/","MOOSEOutput.e")
     #Setup MOOSE for subsequent runs
     Update_Moose_after_Init(Sim_name,ResultsDir,Mesh,MooseFile,PorosityFileMOOSE)
@@ -108,7 +108,7 @@ def runSim(Sim_name,ResultsDir,MooseFileDir,LammpsFileDir,Porosity_Filecpp,Poros
         # -------------------------- MOOSE -------------------------------#
         Update_MOOSE(Sim_name,ResultsDir,MooseFile,PorosityFileMOOSE,time)
         print("----------MOOSE RUN "+str(timestep+1)+ " Beginning----------")
-        call('mpiexec -n 1 /home/crhea/Documents/DukeThesis/bat/bat-opt -i '+ MooseFile,shell=True)
+        call('mpiexec -n 1 /home/clr56/Documents/DukeThesis/bat/bat-opt -i '+ MooseFile,shell=True)
         MooseRenamePorosity(Sim_name,ResultsDir)
         print("----------MOOSE RUN "+str(timestep+1)+ " Ending----------")
         Moose_append_timestep(MooseFileDir+"/","MOOSEOutput.e",timestep)

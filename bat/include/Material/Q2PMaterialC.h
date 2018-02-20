@@ -27,12 +27,13 @@ public:
 protected:
   /// porosity as entered by the user
   //Real _material_por;
+
   const VariableValue & _porosity_var;
   const VariableValue & _porosity_var_old;
   /// porosity changes.  if not entered they default to zero
   const VariableValue & _por_change;
   const VariableValue & _por_change_old;
-
+  
   /// permeability as entered by the user
   RealTensorValue _material_perm;
 

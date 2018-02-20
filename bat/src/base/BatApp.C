@@ -12,6 +12,7 @@
 #include "PorosityRand.h"
 #include "ConstantSource.h"
 #include "NodalPrintOut.h"
+#include "Q2PAction.h"
 //----------- AUGMENTED RICHARDSON MODULES ------//
 //#include "NodalMassS.h"
 //#include "NodalMassP.h"
@@ -82,6 +83,8 @@ BatApp::registerObjects(Factory & factory)
   //registerKernel(SaturationDiffusion);
   //registerKernel(TimeDerivativeS);
   //registerKernel(TimeDerivativeP);
+  // ACTIONS
+  //registerAction(Q2PAction);
   //MATERIALS
   registerMaterial(Q2PMaterialC);
   //AUXKERNELS

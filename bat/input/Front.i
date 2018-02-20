@@ -1,6 +1,6 @@
 [Mesh]
   type = FileMesh
-file = /home/crhea/Documents/DukeThesis/Mesh/square_Ref1.e
+file = /home/clr56/Documents/DukeThesis/Mesh/square_Ref1.e
 []
 
 
@@ -75,11 +75,11 @@ water_viscosity = 1.0
   gas_relperm = RelPermGas
   gas_viscosity = 0.5
   diffusivity = 0.01
-  output_total_masses_to = 'CSV'
-  save_gas_flux_in_Q2PGasFluxResidual = true
-  save_water_flux_in_Q2PWaterFluxResidual = true
-  save_gas_Jacobian_in_Q2PGasJacobian = true
-  save_water_Jacobian_in_Q2PWaterJacobian = true
+ # output_total_masses_to = 'CSV'
+ # save_gas_flux_in_Q2PGasFluxResidual = true
+ # save_water_flux_in_Q2PWaterFluxResidual = true
+ # save_gas_Jacobian_in_Q2PGasJacobian = true
+ # save_water_Jacobian_in_Q2PWaterJacobian = true
 []
 
 
@@ -107,22 +107,22 @@ water_viscosity = 1.0
 [./saT_init]
   type = readinic
   variable = sat
-dataFile = /media/crhea/Data/Results/Front/Front_1.0/MOOSEValues_sat_updated.txt
+dataFile = /media/clr56/Data/Results/FrontCapPor/FrontCapPor_1.0/MOOSEValues_sat_updated.txt
 [../]
 [./press_init]
   type = readinic
   variable = pp
-dataFile = /media/crhea/Data/Results/Front/Front_1.0/MOOSEValues_press_updated.txt
+dataFile = /media/clr56/Data/Results/FrontCapPor/FrontCapPor_1.0/MOOSEValues_press_updated.txt
 [../]
 [./porosity_init]
   type = readinic
   variable = porosity
-dataFile = /media/crhea/Data/Results/Front/Front_1.0/Porosity.txt
+dataFile = /media/clr56/Data/Results/FrontCapPor/FrontCapPor_1.0/Porosity.txt
 [../]
 [./porosity_init_old]
   type = readinic
   variable = porosity_old
-dataFile = /media/crhea/Data/Results/Front/Front_1.0/Porosity_old.txt
+dataFile = /media/clr56/Data/Results/FrontCapPor/FrontCapPor_1.0/Porosity_old.txt
 [../]
 []
 [Materials]
@@ -143,22 +143,22 @@ dataFile = /media/crhea/Data/Results/Front/Front_1.0/Porosity_old.txt
   [./veltyx]
     type = ElementalVelocity
     variable = velocity_x
-    output =/media/crhea/Data/Results/Front/Front_1.0/velocitiesX
+    output =/media/clr56/Data/Results/FrontCapPor/FrontCapPor_1.0/velocitiesX
   [../]
   [./veltyy]
     type = ElementalVelocity
     variable = velocity_y
-    output = /media/crhea/Data/Results/Front/Front_1.0/velocitiesY
+    output = /media/clr56/Data/Results/FrontCapPor/FrontCapPor_1.0/velocitiesY
   [../]
   [./sat_updated_out]
     type = NodalPrintOut
     variable = sat
-     output = /media/crhea/Data/Results/Front/Front_1.0/MOOSEValues_sat_updated
+     output = /media/clr56/Data/Results/FrontCapPor/FrontCapPor_1.0/MOOSEValues_sat_updated
   [../]
   [./press_updated_out]
     type = NodalPrintOut
     variable = pp
-     output = /media/crhea/Data/Results/Front/Front_1.0/MOOSEValues_press_updated
+     output = /media/clr56/Data/Results/FrontCapPor/FrontCapPor_1.0/MOOSEValues_press_updated
   [../]
 []
 
@@ -176,14 +176,14 @@ dataFile = /media/crhea/Data/Results/Front/Front_1.0/Porosity_old.txt
 [Executioner]
   type = Transient
   solve_type = Newton
-  dt = 0.1
+  dt = 0.5
   end_time = 1.0
 []
 
 [Outputs]
-file_base = /media/crhea/Data/Results/Front/Front_1.0/MOOSEFILES/MOOSEOutput
+file_base = ../../../../../../media/clr56/Data/Results/FrontCapPor/FrontCapPor_1.0/MOOSEFILES/MOOSEOutput
   exodus = true
-  [./CSV]
-    type = CSV
-  [../]
+  #[./CSV]
+  #  type = CSV
+  #[../]
 []

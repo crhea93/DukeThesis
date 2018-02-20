@@ -14,13 +14,13 @@ validParams<Q2PMaterialC>()
 {
   InputParameters params = validParams<Material>();
 
-//  params.addRequiredRangeCheckedParam<Real>(//      "mat_porosity",
+  //params.addRequiredRangeCheckedParam<Real>(      "mat_porosity",
 //      "mat_porosity>=0 & mat_porosity<=1",
 //      "The porosity of the material.  Should be between 0 and 1.  Eg, 0.1");
   //params.addCoupledVar("mat_porosity","Porosity of material as a variable");
+  //params.addCoupledVar("damage","Coupled Damage variable");
   params.addCoupledVar("por_var","Porosity variable");
-  params.addCoupledVar("por_var_old","Porosity variable Old Values");
-
+  params.addCoupledVar("por_var_old","Old Porosity variable");
 
   params.addCoupledVar("por_change",
                        0,
@@ -43,9 +43,10 @@ validParams<Q2PMaterialC>()
 Q2PMaterialC::Q2PMaterialC(const InputParameters & parameters)
   : Material(parameters),
     //_material_por(getParam<Real>("mat_porosity")),
+    //_damage(coupledValue("damage")),
+    //_material_por(coupledValue("mat_porosity")),
     _porosity_var(coupledValue("por_var")),
     _porosity_var_old(coupledValue("por_var_old")),
-    //_material_por(coupledValue("mat_porosity")),
     _por_change(coupledValue("por_change")),
     _por_change_old(isCoupled("por_change") ? coupledValueOld("por_change") : _zero),
     _material_perm(getParam<RealTensorValue>("mat_permeability")),
@@ -72,8 +73,8 @@ Q2PMaterialC::Q2PMaterialC(const InputParameters & parameters)
 void
 Q2PMaterialC::computeQpProperties()
 {
-//  _porosity[_qp] = _material_por + _por_change[_qp];
-//  _porosity_old[_qp] = _material_por + _por_change_old[_qp];
+  //_porosity[_qp] = _material_por*_damage[_qp] + _por_change[_qp];
+  ///_porosity_old[_qp] = _material_por*_damage[_qp] + _por_change_old[_qp];
   _porosity[_qp] = _porosity_var[_qp];// + _por_change[_qp];
   _porosity_old[_qp] = _porosity_var_old[_qp];// + _por_change_old[_qp];
 
