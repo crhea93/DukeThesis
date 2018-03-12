@@ -1,6 +1,6 @@
 [Mesh]
   type = FileMesh
-file = /home/clr56/Documents/DukeThesis/Mesh/square_Ref1.e
+file = /home/clr56/Documents/DukeThesis/Mesh/square_Ref1_extended.e
 []
 
 
@@ -176,8 +176,11 @@ dataFile = /media/clr56/Data/Results/FrontCapPor/FrontCapPor_1.0/Porosity_old.tx
 [Executioner]
   type = Transient
   solve_type = Newton
-  dt = 0.5
-  end_time = 1.0
+  dt = 0.01
+  end_time = 0.01
+  l_tol = 1e-8
+  nl_rel_tol = 1e-8
+  nl_abs_tol = 1e-8
 []
 
 [Outputs]

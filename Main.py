@@ -8,7 +8,7 @@ Initial Pressure Value
 Mui = viscosity of invading Fluid
 Mud = viscosity of defending Fluid
 '''
-from Input.FrontCapPor import *
+from Input.Sweep_ref import *
 
 
 # BASIC IMPORTS

@@ -1,0 +1,6 @@
+#!python
+cubit.cmd('set node constraint on')
+cubit.cmd('import mesh geometry "/home/clr56/Documents/DukeThesis/Mesh/square_Ref1_extended.e" block all use nodeset sideset feature_angle 135.00 linear merge ')
+cubit.cmd('Sideset 1 curve 3  ')
+cubit.cmd('set large exodus file off')
+cubit.cmd('export mesh "/home/clr56/Documents/DukeThesis/Mesh/square_Ref1_extended.e" dimension 2 overwrite')

@@ -6,7 +6,7 @@ LAMMPSFILEDIR = 'LAMMPSFILES'
 ResultsDir = '/media/clr56/Data/Results/FrontCapPor/'
 # FILES FOR INPUT
 #PorosityFileInit = 'constant_Ref1'
-mesh = '/home/clr56/Documents/DukeThesis/Mesh/square_Ref1'
+mesh = '/home/clr56/Documents/DukeThesis/Mesh/square_Ref1_extended'
 MooseFile = '/home/clr56/Documents/DukeThesis/bat/input/Front.i'
 LammpsFile = '/home/clr56/Documents/DukeThesis/LAMMPS/inputfiles/in.front_cap'
 ParticlesInput = 'lammps_tube_100.lj'
@@ -39,14 +39,14 @@ def Init_FF(Sim_name,ResultsDir,MooseFileDir,MooseFile,Mesh,Porosity_File,Init_P
     SatInitName = 'dataFile = '+WorkingDirectory+'MOOSEValues_sat_init.txt'
     PressInitName = 'dataFile = '+WorkingDirectory+'MOOSEValues_press_init.txt'
     PorosityInitName = 'dataFile = '+WorkingDirectory+Porosity_File+'.txt'
-    PorosityInitNameOld = 'dataFile = '+WorkingDirectory+Porosity_File+'.txt'
+    PorosityInitNameOld = 'dataFile = '+WorkingDirectory+Porosity_File+'_old.txt'
     XvelName = '    output ='+WorkingDirectory+'velocitiesX'
     YvelName = '    output = '+WorkingDirectory+'velocitiesY'
     Sat_Out = '     output = '+WorkingDirectory+'MOOSEValues_sat_updated'
     Press_Out = '     output = '+WorkingDirectory+'MOOSEValues_press_updated'
     OutputName = 'file_base = ../../../../../..'+WorkingDirectory+MooseFileDir+'/MOOSEOutput'
     InvadingFluidViscosity = 'water_viscosity = '+str(mui)
-    lines_to_change = [3,73,110,115,120,125,146,151,156,161,184]
+    lines_to_change = [3,73,110,115,120,125,146,151,156,161,187]
     new_lines = [Meshchange,InvadingFluidViscosity,SatInitName,PressInitName,PorosityInitName,PorosityInitNameOld,XvelName,YvelName,Sat_Out,Press_Out,OutputName]
     change_input(MooseFile,lines_to_change,new_lines)
 
