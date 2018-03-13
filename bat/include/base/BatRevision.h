@@ -3,7 +3,7 @@
 #ifndef BAT_REVISION_H
 #define BAT_REVISION_H
 
-#define BAT_REVISION "git commit bbc8738 on 2018-01-14"
-#define BAT_VERSION "bbc8738"
+#define BAT_REVISION "git commit 815c600 on 2018-03-12"
+#define BAT_VERSION "815c600"
 
 #endif // BAT_REVISION_H

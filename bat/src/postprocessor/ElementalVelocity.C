@@ -13,7 +13,7 @@
 /****************************************************************/
 
 #include "ElementalVelocity.h"
-
+#include "ElementalVariableValue.h"
 // MOOSE includes
 #include "MooseMesh.h"
 #include "MooseVariable.h"
@@ -48,6 +48,7 @@ ElementalVelocity::ElementalVelocity(const InputParameters & parameters)
 Real
 ElementalVelocity::getValue()
 {
+
   Real value = 0;
   std::ofstream file;
   file.open(_outputname+".csv");
@@ -59,10 +60,8 @@ ElementalVelocity::getValue()
 
       _subproblem.prepare(_element, _tid);
       _subproblem.reinitElem(_element, _tid);
-      //std::cout<<_mesh.getMesh().n_elem();
-      //std::cout<<_element->point(0)(0)<<std::endl;
-      //std::cout<<i<<std::endl;
-      MooseVariable & var = _subproblem.getVariable(_tid, _var_name);
+      
+      MooseVariable & var = _subproblem.getStandardVariable(_tid, _var_name);
       const VariableValue & u = var.sln();
       unsigned int n = u.size();
       for (unsigned int i = 0; i < n; i++)

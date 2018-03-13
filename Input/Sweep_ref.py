@@ -5,9 +5,9 @@ Input File for Front with Capillary and Viscous Forces
 Name_of_Sim = 'SweepSimulations/Viscosity'
 MOOSEFILEDIR = 'MOOSEFILES'
 LAMMPSFILEDIR = 'LAMMPSFILES'
-ResultsDir = '/media/crhea/Data/Results/Thesis/Refinement/'
+ResultsDir = '/home/crhea/Desktop/Results/Thesis/'
 # FILES FOR INPUT
-mesh = '/home/crhea/Documents/DukeThesis/Mesh/Disk'
+mesh = '/home/crhea/Documents/DukeThesis/Mesh/Disk_ref_inner'
 MooseFile = '/home/crhea/Documents/DukeThesis/bat/input/Radial_ref.i'
 LammpsFile = '/home/crhea/Documents/DukeThesis/LAMMPS/inputfiles/in.disk'
 ParticlesInput = 'full_disk.lj'
@@ -24,13 +24,19 @@ Porosity_Boolean = True
 mud = 0.5 #Viscosity of defending Fluid
 Domain = [-0.6,0.6,-0.6,0.6] #Rectangle
 #Values for Porosity calculations
-annulus_radius = 0.02 #Radius of small anulus
+annulus_radius = 0.01 #Radius of small anulus was 0.02
 domain_radius = 1.8 #Radius of domain
 NN_number = 100 #Number of nearest neighbors
 
 # FUNCTIONS FOR UPDATING (ONLY EVER NEED TO CHANGE THE LINES)
-from pythonCode.MOOSE.InitSatPorCircle import InitConst,InitCircle
-from pythonCode.Cohesion.ChangeFiles import change_input
+import sys
+sys.path.insert(0, '/home/crhea/Documents/DukeThesis/pythonCode')
+sys.path.insert(0, '/home/crhea/Documents/DukeThesis/pythonCode/MOOSE')
+sys.path.insert(0, '/home/crhea/Documents/DukeThesis/pythonCode/Cohesion')
+
+
+from InitSatPorCircle import InitConst,InitCircle
+from ChangeFiles import change_input
 
 
 def Init_FF(Sim_name,ResultsDir,MooseFileDir,MooseFile,Mesh,Porosity_File,Init_Press,mui):
@@ -46,7 +52,7 @@ def Init_FF(Sim_name,ResultsDir,MooseFileDir,MooseFile,Mesh,Porosity_File,Init_P
     YvelName = '    output = '+WorkingDirectory+'velocitiesY'
     Sat_Out = '     output = '+WorkingDirectory+'MOOSEValues_sat_updated'
     Press_Out = '     output = '+WorkingDirectory+'MOOSEValues_press_updated'
-    OutputName = 'file_base = '+WorkingDirectory+MooseFileDir+'/MOOSEOutput'
+    OutputName = 'file_base = '+MooseFileDir+'/MOOSEOutput'
     InvadingFluidViscosity = 'water_viscosity = '+str(mui)
     lines_to_change = [3,66,110,115,120,125,146,151,156,161,184]
     new_lines = [Meshchange,InvadingFluidViscosity,SatInitName,PressInitName,PorosityInitName,PorosityInitNameOld,XvelName,YvelName,Sat_Out,Press_Out,OutputName]

@@ -5,7 +5,7 @@
 # Optional Environment variables
 # MOOSE_DIR        - Root directory of the MOOSE project 
 #
-MOOSE_DIR          ?= /home/clr56/projects/moose
+MOOSE_DIR          ?= /home/crhea/projects/moose
 FRAMEWORK_DIR      ?= $(MOOSE_DIR)/framework
 MODULE_DIR	   ?= $(MOOSE_DIR)/modules
 ###############################################################################
