@@ -17,9 +17,9 @@ def Moose_append_timestep(directory,filename,timestep):
     '''
     nc = netCDF4.Dataset(directory+filename)
 
-    por = nc.variables['vals_nod_var1'][1]
-    pp = nc.variables['vals_nod_var3'][1]
-    sat = nc.variables['vals_nod_var4'][1]
+    por = nc.variables['vals_nod_var7'][1]
+    pp = nc.variables['vals_nod_var9'][1]
+    sat = nc.variables['vals_nod_var10'][1]
     x = nc.variables['coordx']
     y = nc.variables['coordy']
 
@@ -31,12 +31,11 @@ def Moose_append_timestep(directory,filename,timestep):
 def Moose_append_init(directory,filename):
     filename_no_ext = os.path.splitext(filename)[0]
     #copyfile(directory+filename,directory+filename_no_ext+'.e-s.000')
-    print(directory+filename)
     nc = netCDF4.Dataset(directory+filename)
     print(nc)
-    por = nc.variables['vals_nod_var1'][1]#7
-    pp = nc.variables['vals_nod_var3'][1]#//9
-    sat = nc.variables['vals_nod_var4'][1]#10
+    por = nc.variables['vals_nod_var7'][1]#7
+    pp = nc.variables['vals_nod_var9'][1]#//9
+    sat = nc.variables['vals_nod_var10'][1]#10
     x = nc.variables['coordx']
     y = nc.variables['coordy']
 

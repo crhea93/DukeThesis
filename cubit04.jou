@@ -1,0 +1,20 @@
+## /home/clr56/Applications/Cubit/bin/clarox
+## Cubit Version 15.0
+## Cubit Build 401220
+## Revised 2015-10-29 13:04:49 -0600 (Thu, 29 Oct 2015)
+## Running 04/09/2018 10:15:57 AM
+## Command Options:
+create surface circle radius 0.6 zplane
+surface 1 scheme trimesh
+surface 1 size auto factor 1
+surface 1 size auto factor 1
+mesh surface 1
+refine surface 1 numsplit 1 bias 1 depth 1 smooth
+set large exodus file off
+export mesh "/home/clr56/Documents/DukeThesis/Mesh/bigDisk10k.e" dimension 2 overwrite
+refine surface 1 numsplit 1 bias 1 depth 1 smooth
+set large exodus file off
+export mesh "/home/clr56/Documents/DukeThesis/Mesh/bigDisk40k.e" dimension 2 overwrite
+refine surface 1 numsplit 1 bias 1 depth 1 smooth
+set large exodus file off
+export mesh "/home/clr56/Documents/DukeThesis/Mesh/bigDisk160k.e" dimension 2 overwrite

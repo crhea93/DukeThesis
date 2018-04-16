@@ -43,9 +43,9 @@ def changeInput():
 
 def main():
     lmp = lammps()
-    os.chdir('/home/crhea/Documents/DukeThesis/')
-    lmp.file('/home/crhea/Documents/DukeThesis/LAMMPS/inputfiles/in.Initialize_Packing_Circle')
+    os.chdir('/home/clr56/Documents/DukeThesis/')
+    lmp.file('/home/clr56/Documents/DukeThesis/LAMMPS/inputfiles/in.Initialize_Packing_Circle')
     for i in range(100):
-        reformat('/media/crhea/Data/HydroEquil/pos_lammps_out'+str(1000*i)+'.txt','/media/crhea/Data/HydroEquil/test'+str(i),7860)
+        reformat('/media/clr56/Data/HydroEquil/pos_lammps_out'+str(1000*i)+'.txt','/media/clr56/Data/HydroEquil/test'+str(i),7860)
 
 main()

@@ -5,18 +5,18 @@ Input File for Front with Capillary and Viscous Forces
 Name_of_Sim = 'SweepSimulations/Viscosity'
 MOOSEFILEDIR = 'MOOSEFILES'
 LAMMPSFILEDIR = 'LAMMPSFILES'
-ResultsDir = '/media/crhea/Data/Results/Thesis/'
+ResultsDir = '/home/clr56/Desktop/Results/Thesis/'
 # FILES FOR INPUT
-mesh = '/home/crhea/Documents/DukeThesis/Mesh/Disk'
-MooseFile = '/home/crhea/Documents/DukeThesis/bat/input/Radial.i'
-LammpsFile = '/home/crhea/Documents/DukeThesis/LAMMPS/inputfiles/in.disk'
-ParticlesInput = 'full_disk.lj'
+mesh = '/home/clr56/Documents/DukeThesis/Mesh/Disk'
+MooseFile = '/home/clr56/Documents/DukeThesis/bat/input/Radial.i'
+LammpsFile = '/home/clr56/Documents/DukeThesis/LAMMPS/inputfiles/in.disk'
+ParticlesInput = 'lammps_circle_hydrostatic.lj'
 PorosityFilecpp = 'porosity'
 PorosityFileforMOOSE = 'Porosity'
 # VALUES FOR INPUT
 initial_press = 0.0+10**(-5)
-number_particles = 7860
-number_times = 1000
+number_particles = 9960#7860
+number_times = 100
 particle_diameter = 0.01
 Porosity_Boolean = True
 #mui = 0.8 #Viscosity of invading Fluid
@@ -24,7 +24,7 @@ Porosity_Boolean = True
 mud = 0.5 #Viscosity of defending Fluid
 Domain = [-0.6,0.6,-0.6,0.6] #Rectangle
 #Values for Porosity calculations
-annulus_radius = 0.02 #Radius of small anulus
+annulus_radius = 0.01 #Radius of small anulus
 domain_radius = 1.8 #Radius of domain
 NN_number = 100 #Number of nearest neighbors
 
@@ -46,7 +46,7 @@ def Init_FF(Sim_name,ResultsDir,MooseFileDir,MooseFile,Mesh,Porosity_File,Init_P
     YvelName = '    output = '+WorkingDirectory+'velocitiesY'
     Sat_Out = '     output = '+WorkingDirectory+'MOOSEValues_sat_updated'
     Press_Out = '     output = '+WorkingDirectory+'MOOSEValues_press_updated'
-    OutputName = 'file_base = '+WorkingDirectory+MooseFileDir+'/MOOSEOutput'
+    OutputName = 'file_base = '+MooseFileDir+'/MOOSEOutput'#+WorkingDirectory+MooseFileDir+'/MOOSEOutput'
     InvadingFluidViscosity = 'water_viscosity = '+str(mui)
     lines_to_change = [3,66,110,115,120,125,146,151,156,161,184]
     new_lines = [Meshchange,InvadingFluidViscosity,SatInitName,PressInitName,PorosityInitName,PorosityInitNameOld,XvelName,YvelName,Sat_Out,Press_Out,OutputName]

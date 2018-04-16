@@ -13,14 +13,14 @@ class particle:
         self.xv = 0 # x velocity
         self.yp = 0 # y coordinate
         self.yv = 0 # y velocity
-        self.rad = 0.01# particle radius
+        self.rad = 0.005# particle radius
         self.m = 0 # mass
-    def assign(self,xpos,xvel,ypos,yvel):
+    def assign(self,xpos,xvel,ypos,yvel,rad):
         self.xp = xpos
         self.xv = xvel
         self.yp = ypos
         self.yv = yvel
-        self.rad = 0.01
+        self.rad = rad
         self.m = 1
 
 def particle_in(x_minin,x_maxin,y_minin,y_maxin,particle):
@@ -56,7 +56,7 @@ def square_lattice(x_min,x_max,y_min,y_max,x_parts,y_parts,num_particles,outer_R
     for i in range(len(x)):
         for j in range(len(y)):
             new_particle = particle()
-            new_particle.assign(x[i],0,y[j],0)
+            new_particle.assign(x[i],0,y[j],0,part_rad)
             #Check if particle is in inclusion
             if particle_outside_inner(inner_rad,new_particle,part_rad) == False:
                 pass
@@ -65,7 +65,7 @@ def square_lattice(x_min,x_max,y_min,y_max,x_parts,y_parts,num_particles,outer_R
             else:
                 particles.append(new_particle)
                 num_particles_in += 1
-    f2 = open('/home/crhea/Documents/DukeThesis/test.csv','w')
+    f2 = open('/home/clr56/Documents/DukeThesis/test.csv','w')
     f2.write("ID,X,Y \n")
     f = open(output,"w")
     f.write("LAMMPS Data File for updated particles")
@@ -75,9 +75,9 @@ def square_lattice(x_min,x_max,y_min,y_max,x_parts,y_parts,num_particles,outer_R
     f.write('\n')
     f.write('1 atom types')
     f.write('\n')
-    f.write(str(x_min-0.1)+" "+str(x_max+0.1)+" xlo xhi")
+    f.write(str(x_min-0.01)+" "+str(x_max+0.01)+" xlo xhi")
     f.write('\n')
-    f.write(str(y_min-0.1)+" "+str(y_max+0.1)+" "+" ylo yhi")
+    f.write(str(y_min-0.01)+" "+str(y_max+0.01)+" "+" ylo yhi")
     f.write('\n')
     f.write('-0.5 0.5 zlo zhi')
     f.write('\n')
@@ -91,4 +91,4 @@ def square_lattice(x_min,x_max,y_min,y_max,x_parts,y_parts,num_particles,outer_R
         f.write(str(i+1)+" 1 1 1 "+str(particles[i].xp)+" "+str(particles[i].yp)+ " 0 0 0 0"+'\n')
         f2.write(str(i+1)+","+str(particles[i].xp)+","+str(particles[i].yp)+'\n')
 
-square_lattice(-0.49,0.49,-0.49,0.49,100,100,10000,0.5,0.05,0.005,'/home/crhea/Documents/DukeThesis/ParticleFiles/lammps_circle_100x100_T.lj')
+square_lattice(-0.49,0.49,-0.49,0.49,1000,1000,1000000,0.5,0.05,0.0002,'/home/clr56/Documents/DukeThesis/ParticleFiles/lammps_circle_100k.lj')

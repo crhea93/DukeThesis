@@ -27,13 +27,13 @@ boundary 	f f p
 
 
 
-read_data       /home/crhea/Documents/DukeThesis/ParticleFiles/lammps_full_disk.lj
+read_data       /home/clr56/Documents/DukeThesis/ParticleFiles/lammps_circle_100k.lj
 region		diskinner sphere 0.0 0.0 0 0.05 side out
 region		diskouter sphere 0.0 0.0 0 0.5 side in
 
 
 atom_modify	sort 0 0
-neigh_modify    delay 0 every 1 one 100
+neigh_modify    delay 0 every 100000 one 1000
 
 
 set 		group all density 0.01
@@ -43,15 +43,14 @@ comm_modify	vel yes
 
 
 #now to print out info
-dump pos 	all custom 1000 /media/crhea/Data/HydroEquil/pos_lammps_out*.txt id type x y z vx vy vz
+dump pos 	all custom 1000 /media/clr56/Data/HydroEquil/pos_lammps_out*.txt id type x y z vx vy vz
 
 #Apply capillary/viscous and contact
-pair_style 	hooke/cap/init ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0 10.0 10.0 0.78 0.00001 10.0 /media/crhea/Data/Results/Thesis/SweepSimulations/Viscosity_1.0/SaturationInterpoated.txt 
+pair_style 	hooke/cap/init ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0 10.0 10.0 0.78 0.00001 10.0 /home/clr56/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/SaturationInterpolated.txt 
 pair_coeff	* *
 
 
-timestep	0.0001
-
+timestep	0.00000001
 fix 		innerannulus all wall/gran/region hooke/history 10000.0 2000.0 2000.0 1000.0 0.5 1 region diskinner
 fix		outerannulus all wall/gran/region hooke/history 10000.0 2000.0 2000.0 1000.0 0.5 1 region diskouter
 

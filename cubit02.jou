@@ -1,0 +1,16 @@
+## /home/clr56/Applications/Cubit/bin/clarox
+## Cubit Version 15.0
+## Cubit Build 401220
+## Revised 2015-10-29 13:04:49 -0600 (Thu, 29 Oct 2015)
+## Running 03/20/2018 01:12:41 PM
+## Command Options:
+import mesh geometry "/home/clr56/Documents/DukeThesis/Mesh/Disk_ref_inner.e" block all use nodeset sideset feature_angle 135 linear merge
+sideset 1 surface 1 patch center 0 0 0 radius 0.01
+sideset 1 surface 1 patch center 0 0 0 radius 0.1
+sideset 1 surface 1 patch center 0 0 0 radius 0.01
+reset
+import mesh geometry "/home/clr56/Documents/DukeThesis/Mesh/Disk_ref_inner.e" block all use nodeset sideset feature_angle 135 linear merge
+sideset 1 surface 1 patch center 0 0 0 radius 0.01
+delete nodeset 1
+set large exodus file off
+export mesh "/home/clr56/Documents/DukeThesis/Mesh/Disk_ref_inner.e" dimension 2 overwrite

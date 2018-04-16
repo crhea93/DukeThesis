@@ -26,8 +26,8 @@ atom_style	sphere
 boundary 	f f p
 
 
-read_data       full_disk.lj
-#region 		diskinner sphere 0.0 0.0 0.0 0.05 side out
+read_data       lammps_circle_hydrostatic.lj
+region 		diskinner sphere 0.0 0.0 0.0 0.05 side out
 region 		diskouter sphere 0.0 0.0 0.0 0.5 side in
 
 
@@ -38,12 +38,12 @@ set 		group all diameter ${Diam}
 
 comm_modify	vel yes
 #now to print out info
-dump pos 	all custom 1 /home/crhea/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/LAMMPSFILES/pos_lammps_out.txt id type x y z vx vy vz
-restart		1 /home/crhea/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/LAMMPSFILES/restart1 /home/crhea/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/LAMMPSFILES/restart2
-pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0  10.0 10.0 0.78 0.99 50.0 /home/crhea/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/SaturationInterpolated.txt
+dump pos 	all custom 1 /home/clr56/Desktop/Results/Thesis/SweepSimulations/Viscosity_250.0/LAMMPSFILES/pos_lammps_out.txt id type x y z vx vy vz
+restart		1 /home/clr56/Desktop/Results/Thesis/SweepSimulations/Viscosity_250.0/LAMMPSFILES/restart1 /home/clr56/Desktop/Results/Thesis/SweepSimulations/Viscosity_250.0/LAMMPSFILES/restart2
+pair_style 	hooke/cap ${kn} ${kt} ${gamma_n} ${gamma_t} ${coeffFric} 0  10.0 10.0 0.78 0.99 50.0 /home/clr56/Desktop/Results/Thesis/SweepSimulations/Viscosity_250.0/SaturationInterpolated.txt
 pair_coeff	* *
 
-fix		1 all viscous/field 1.0 /home/crhea/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/VelForLammpsX.txt /home/crhea/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/VelForLammpsY.txt /home/crhea/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/Viscosity.txt
+fix		1 all viscous/field 1.0 /home/clr56/Desktop/Results/Thesis/SweepSimulations/Viscosity_250.0/VelForLammpsX.txt /home/clr56/Desktop/Results/Thesis/SweepSimulations/Viscosity_250.0/VelForLammpsY.txt /home/clr56/Desktop/Results/Thesis/SweepSimulations/Viscosity_250.0/Viscosity.txt
 #fix             innerannulus all wall/gran/region hooke/history 10000.0 2000.0 2000.0 1000.0 0.5 1 region diskinner
 fix             outerannulus all wall/gran/region hooke/history 10000.0 2000.0 2000.0 1000.0 0.5 1 region diskouter
 

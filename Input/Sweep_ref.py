@@ -5,18 +5,18 @@ Input File for Front with Capillary and Viscous Forces
 Name_of_Sim = 'SweepSimulations/Viscosity'
 MOOSEFILEDIR = 'MOOSEFILES'
 LAMMPSFILEDIR = 'LAMMPSFILES'
-ResultsDir = '/home/crhea/Desktop/Results/Thesis/'
+ResultsDir = '/home/clr56/Desktop/Results/Thesis/'
 # FILES FOR INPUT
-mesh = '/home/crhea/Documents/DukeThesis/Mesh/Disk_ref_inner'
-MooseFile = '/home/crhea/Documents/DukeThesis/bat/input/Radial_ref.i'
-LammpsFile = '/home/crhea/Documents/DukeThesis/LAMMPS/inputfiles/in.disk'
+mesh = '/home/clr56/Documents/DukeThesis/Mesh/Disk'
+MooseFile = '/home/clr56/Documents/DukeThesis/bat/input/Radial.i'
+LammpsFile = '/home/clr56/Documents/DukeThesis/LAMMPS/inputfiles/in.disk'
 ParticlesInput = 'full_disk.lj'
 PorosityFilecpp = 'porosity'
 PorosityFileforMOOSE = 'Porosity'
 # VALUES FOR INPUT
 initial_press = 0.0+10**(-5)
 number_particles = 7860
-number_times = 1000
+number_times = 100
 particle_diameter = 0.01
 Porosity_Boolean = True
 #mui = 0.8 #Viscosity of invading Fluid
@@ -30,9 +30,9 @@ NN_number = 100 #Number of nearest neighbors
 
 # FUNCTIONS FOR UPDATING (ONLY EVER NEED TO CHANGE THE LINES)
 import sys
-sys.path.insert(0, '/home/crhea/Documents/DukeThesis/pythonCode')
-sys.path.insert(0, '/home/crhea/Documents/DukeThesis/pythonCode/MOOSE')
-sys.path.insert(0, '/home/crhea/Documents/DukeThesis/pythonCode/Cohesion')
+sys.path.insert(0, '/home/clr56/Documents/DukeThesis/pythonCode')
+sys.path.insert(0, '/home/clr56/Documents/DukeThesis/pythonCode/MOOSE')
+sys.path.insert(0, '/home/clr56/Documents/DukeThesis/pythonCode/Cohesion')
 
 
 from InitSatPorCircle import InitConst,InitCircle

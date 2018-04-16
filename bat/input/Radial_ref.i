@@ -1,6 +1,6 @@
 [Mesh]
   type = FileMesh
-file = /home/crhea/Documents/DukeThesis/Mesh/Disk_ref_inner.e
+file = /home/clr56/Documents/DukeThesis/Mesh/Disk_ref_inner.e
 []
 
 
@@ -50,14 +50,14 @@ file = /home/crhea/Documents/DukeThesis/Mesh/Disk_ref_inner.e
     family = MONOMIAL
   [../]
 []
-[BCs]
-  [./central_constant]
-   type = DirichletBC
-   boundary = 1
-   variable = sat
-   value = 0.99
-   [../]
-[]
+#[BCs]
+#  [./central_constant]
+#   type = DirichletBC
+#   boundary = 1
+#   variable = sat
+#   value = 0.99
+#   [../]
+#[]
 [Q2P]
   porepressure = pp
   saturation = sat
@@ -107,22 +107,22 @@ water_viscosity = 100.0
 [./sat_init]
   type = readinic
   variable = sat
-dataFile = /home/crhea/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/MOOSEValues_sat_updated.txt
+dataFile = /home/clr56/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/MOOSEValues_sat_updated.txt
 [../]
 [./pp_init]
   type = readinic
   variable = pp
-dataFile = /home/crhea/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/MOOSEValues_press_updated.txt
+dataFile = /home/clr56/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/MOOSEValues_press_updated.txt
 [../]
 [./porosity_init]
   type = readinic
   variable = porosity
-dataFile = /home/crhea/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/Porosity.txt
+dataFile = /home/clr56/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/Porosity.txt
 [../]
 [./porosity_init_old]
   type = readinic
   variable = porosity_old
-dataFile = /home/crhea/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/Porosity_old.txt
+dataFile = /home/clr56/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/Porosity_old.txt
 [../]
 []
 
@@ -143,22 +143,22 @@ dataFile = /home/crhea/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/P
   [./veltyx]
     type = ElementalVelocity
     variable = velocity_x
-    output =/home/crhea/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/velocitiesX
+    output =/home/clr56/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/velocitiesX
   [../]
   [./veltyy]
     type = ElementalVelocity
     variable = velocity_y
-    output = /home/crhea/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/velocitiesY
+    output = /home/clr56/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/velocitiesY
   [../]
   [./sat_updated_out]
     type = NodalPrintOut
     variable = sat
-     output = /home/crhea/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/MOOSEValues_sat_updated
+     output = /home/clr56/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/MOOSEValues_sat_updated
   [../]
   [./press_updated_out]
     type = NodalPrintOut
     variable = pp
-     output = /home/crhea/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/MOOSEValues_press_updated
+     output = /home/clr56/Desktop/Results/Thesis/SweepSimulations/Viscosity_100.0/MOOSEValues_press_updated
   [../]
 []
 
